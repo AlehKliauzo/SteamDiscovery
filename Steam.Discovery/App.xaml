@@ -26,6 +26,7 @@
             <Style x:Key="ListViewWithoutHighlighting" TargetType="ListView">
                 <Style.Setters>
                     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
                     <Setter Property="ItemContainerStyle">
                         <Setter.Value>
                             <Style TargetType="{x:Type ListViewItem}">

@@ -21,7 +21,8 @@
               VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
 
-                <CheckBox Margin="5">
+                <CheckBox Margin="5"
+                          IsChecked="{Binding IsReleasedAfterFilterEnabled}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBox IsReadOnly="True"
@@ -29,13 +30,15 @@
                                  Text="released after"/>
 
                             <TextBox Width="80"
+                                     Text="{Binding ReleasedAfter, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="0"
                                  BorderThickness="0 0 0 1"/>
                         </StackPanel>
                     </CheckBox.Content>
                 </CheckBox>
 
-                <CheckBox Margin="5">
+                <CheckBox Margin="5"
+                          IsChecked="{Binding IsMoreThanXReviewsFilterEnabled}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBox IsReadOnly="True"
@@ -43,6 +46,7 @@
                                  Text="has more than"/>
 
                             <TextBox Width="60"
+                                     Text="{Binding MoreThanXReviews, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="0"
                                  BorderThickness="0 0 0 1"/>
 
@@ -53,7 +57,8 @@
                     </CheckBox.Content>
                 </CheckBox>
 
-                <CheckBox Margin="5">
+                <CheckBox Margin="5"
+                          IsChecked="{Binding IsDoesntHaveTagsFilterEnabled}">
                     <CheckBox.Content>
                         <TextBox IsReadOnly="True"
                                  BorderThickness="0"
@@ -62,6 +67,7 @@
                 </CheckBox>
 
                 <TextBox Width="250"
+                         Text="{Binding DoesntHaveTags, UpdateSourceTrigger=PropertyChanged}"
                                      Height="100"
                                      VerticalScrollBarVisibility="Auto"
                                      TextWrapping="Wrap"

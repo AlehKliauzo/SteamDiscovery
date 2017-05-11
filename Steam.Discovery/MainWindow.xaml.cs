@@ -24,12 +24,6 @@ namespace Steam.Discovery
         public MainWindow()
         {
             InitializeComponent();
-            SizeChanged += MainWindow_SizeChanged;
-        }
-
-        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            
         }
     }
 }
