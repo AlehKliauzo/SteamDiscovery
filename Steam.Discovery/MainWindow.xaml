@@ -6,6 +6,7 @@
                       Title="Steam Discovery"
                       TitleCharacterCasing="Normal"
                       TitleAlignment="Center"
+                      MinHeight="500"
                       Height="600"
                       MinWidth="800"
                       Width="1000"
@@ -114,88 +115,104 @@
             </StackPanel>
         </Grid>
 
-        <ListView Grid.Column="1"
-                  BorderThickness="0"
-                  ItemsSource="{Binding Games}"
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <ListView Grid.Row="0"
+                        BorderThickness="0"
+                  ItemsSource="{Binding Games}"     
               x:Name="GamesList"
               Style="{StaticResource ListViewWithoutHighlighting}">
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Background="SkyBlue"
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="SkyBlue"
                           Cursor="Hand"
                           Tag="{Binding Id}"
                           MouseLeftButtonDown="Grid_MouseLeftButtonDown"
                       Margin="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"
+                            <TextBlock Grid.Row="0"
                                Text="{Binding Name}"
                                    HorizontalAlignment="Left"
                                VerticalAlignment="Bottom"
                                    TextWrapping="Wrap"
                                FontSize="25"
                                    >
-                            <TextBlock.Margin>
-                                <MultiBinding Converter="{StaticResource ListWidthToNameMarginConverter}">
-                                    <Binding Path="ActualWidth" ElementName="GamesList"/>
-                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
-                                </MultiBinding>
-                            </TextBlock.Margin>
-                        </TextBlock>
+                                <TextBlock.Margin>
+                                    <MultiBinding Converter="{StaticResource ListWidthToNameMarginConverter}">
+                                        <Binding Path="ActualWidth" ElementName="GamesList"/>
+                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                    </MultiBinding>
+                                </TextBlock.Margin>
+                            </TextBlock>
 
-                        <TextBlock Grid.Row="0"   
+                            <TextBlock Grid.Row="0"   
                                FontSize="12"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
                                Margin="0 2 5 2">
-                            <TextBlock.Text>
-                                <Binding StringFormat="{}Release date: {0:yyyy.MM.dd}" Path="ReleaseDate"/>
-                            </TextBlock.Text>
-                        </TextBlock>
+                                <TextBlock.Text>
+                                    <Binding StringFormat="{}Release date: {0:yyyy.MM.dd}" Path="ReleaseDate"/>
+                                </TextBlock.Text>
+                            </TextBlock>
 
-                        <Grid Grid.Row="1"
+                            <Grid Grid.Row="1"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
 
-                            <StackPanel Orientation="Vertical"
+                                <StackPanel Orientation="Vertical"
                                     Grid.Column="0"
                                     Margin="5 0 5 5">
 
-                                <TextBlock Text="{Binding WilsonScore, StringFormat='F2'}"
+                                    <TextBlock Text="{Binding WilsonScore, StringFormat='F2'}"
                                        FontSize="16"/>
 
-                                <TextBlock FontSize="12">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} reviews, {1} positive">
-                                            <Binding Path="AllTotalReviews" />
-                                            <Binding Path="AllPositiveReviews"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </StackPanel>
+                                    <TextBlock FontSize="12">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} reviews, {1} positive">
+                                                <Binding Path="AllTotalReviews" />
+                                                <Binding Path="AllPositiveReviews"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </StackPanel>
 
-                            <TextBlock Grid.Column="1"
+                                <TextBlock Grid.Column="1"
                                    FontSize="14"
                                    MinWidth="200"
                                    Width="{Binding ActualWidth, ElementName=GamesList, Converter={StaticResource GamesListToTagsTextBlockWidthConverter}}"
                                    Text="{Binding Tags, Converter={StaticResource CollectionToStringConverter}}"
                                    TextWrapping="Wrap"
                                    Margin="10 0 5 5"/>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid Grid.Row="1">
+                <TextBlock HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="2 2 15 2">
+                    <TextBlock.Text>
+                        <Binding StringFormat="{}{0} results" Path="ResultsCount"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+        </Grid>
 
     </Grid>
 
 </Controls:MetroWindow>
-

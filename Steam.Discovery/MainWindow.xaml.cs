@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
 using Steam.Discovery.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
- 
+
 namespace Steam.Discovery
 {
     /// <summary>
@@ -26,6 +27,15 @@ namespace Steam.Discovery
         public MainWindow()
         {
             InitializeComponent();
+            Messenger.Default.Register<Message>(this, OnMessageReceived);
+        }
+
+        private void OnMessageReceived(Message message)
+        {
+            if (message == Message.GamesListChanged && GamesList.Items.Count > 0)
+            {
+                GamesList.ScrollIntoView(GamesList.Items[0]);
+            }
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -38,8 +48,7 @@ namespace Steam.Discovery
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var mainVm = (MainViewModel)DataContext;
-            mainVm.SaveSettings();
+            Messenger.Default.Send<Message>(Message.AppClosing);
         }
     }
 }

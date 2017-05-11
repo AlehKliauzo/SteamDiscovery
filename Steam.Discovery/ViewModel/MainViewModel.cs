@@ -1,4 +1,5 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using Steam.Common;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ namespace Steam.Discovery.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private List<Game> _allGames;
+        private List<Game> _filteredGames;
         private bool _updatesSuspended;
 
         public MainViewModel()
         {
             Load();
+            Messenger.Default.Register<Message>(this, OnMessageReceived);
         }
 
         #region Properties
@@ -152,6 +155,17 @@ namespace Steam.Discovery.ViewModel
             }
         }
 
+        private string _resultsCount;
+        public string ResultsCount
+        {
+            get { return _resultsCount; }
+            set
+            {
+                _resultsCount = value;
+                RaisePropertyChanged(() => ResultsCount);
+            }
+        }
+
         #endregion
 
         private void FiltersChanged()
@@ -198,8 +212,14 @@ namespace Steam.Discovery.ViewModel
                 }
             }
 
-            var filteredGames = games.OrderByDescending(x => x.WilsonScore).Take(10).ToList();
-            Games = new ObservableCollection<Game>(filteredGames);
+            _filteredGames = games.OrderByDescending(x => x.WilsonScore).ToList();
+            var page = _filteredGames.Take(10).ToList();
+            Games = new ObservableCollection<Game>(page);
+
+            Messenger.Default.Send<string>("Games list changed");
+            //GamesChanged();
+
+            ResultsCount = _filteredGames.Count.ToString();
         }
 
         private void Load()
@@ -235,7 +255,7 @@ namespace Steam.Discovery.ViewModel
             FiltersChanged();
         }
 
-        public void SaveSettings()
+        private void SaveSettings()
         {
             var settings = new Settings();
             settings.IsNameContainsFilterEnabled = IsNameContainsFilterEnabled;
@@ -249,6 +269,14 @@ namespace Steam.Discovery.ViewModel
             settings.IsHasTagsFilterEnabled = IsHasTagsFilterEnabled;
             settings.HasTags = HasTags;
             Serializer.SaveSettings(settings);
+        }
+
+        private void OnMessageReceived(Message message)
+        {
+            if(message == Message.AppClosing)
+            {
+                SaveSettings();
+            }
         }
     }
 }
