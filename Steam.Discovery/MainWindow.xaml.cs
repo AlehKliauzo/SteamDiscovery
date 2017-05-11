@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using Steam.Discovery.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,6 +34,12 @@ namespace Steam.Discovery
             var tag = (string)grid.Tag;
             var url = "http://store.steampowered.com/app/" + tag;
             Process.Start(url);
+        }
+
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var mainVm = (MainViewModel)DataContext;
+            mainVm.SaveSettings();
         }
     }
 }

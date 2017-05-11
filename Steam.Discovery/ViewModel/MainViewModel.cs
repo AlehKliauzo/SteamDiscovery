@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Steam.Discovery.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         private List<Game> _allGames;
+        private bool _updatesSuspended;
 
         public MainViewModel()
         {
-            Games = new ObservableCollection<Game>();
-            LoadGames();
+            Load();
         }
 
         #region Properties
@@ -107,6 +108,9 @@ namespace Steam.Discovery.ViewModel
 
         private void FiltersChanged()
         {
+            if (_updatesSuspended)
+                return;
+
             IEnumerable<Game> games = _allGames;
 
             if (IsReleasedAfterFilterEnabled && DateTime.TryParse(ReleasedAfter, out DateTime releaseDate))
@@ -130,19 +134,49 @@ namespace Steam.Discovery.ViewModel
                 }
             }
 
-            var filteredGames = games.OrderByDescending(x => x.WilsonScore).Take(20).ToList();
+            var filteredGames = games.OrderByDescending(x => x.WilsonScore).Take(10).ToList();
             Games = new ObservableCollection<Game>(filteredGames);
         }
 
-        private void LoadGames()
+        private void Load()
         {
             Task.Run(() =>
             {
-                _allGames = GamesSerializer.Load();
-                var games = _allGames.OrderByDescending(x => x.WilsonScore).Take(20).ToList();
-                Games = new ObservableCollection<Game>(games);
+                var settings = Serializer.LoadSettings();
+                _allGames = Serializer.LoadGames();
+
+                LoadSettings(settings);
+                //var games = _allGames.OrderByDescending(x => x.WilsonScore).Take(20).ToList();
+                //Games = new ObservableCollection<Game>(games);
             }
             );
+        }
+
+        private void LoadSettings(Settings settings)
+        {
+            _updatesSuspended = true;
+
+            IsReleasedAfterFilterEnabled = settings.IsReleasedAfterFilterEnabled;
+            ReleasedAfter = settings.ReleasedAfter;
+            IsMoreThanXReviewsFilterEnabled = settings.IsMoreThanXReviewsFilterEnabled;
+            MoreThanXReviews = settings.MoreThanXReviews;
+            IsDoesntHaveTagsFilterEnabled = settings.IsDoesntHaveTagsFilterEnabled;
+            DoesntHaveTags = settings.DoesntHaveTags;
+
+            _updatesSuspended = false;
+            FiltersChanged();
+        }
+
+        public void SaveSettings()
+        {
+            var settings = new Settings();
+            settings.IsReleasedAfterFilterEnabled = IsReleasedAfterFilterEnabled;
+            settings.ReleasedAfter = ReleasedAfter;
+            settings.IsMoreThanXReviewsFilterEnabled = IsMoreThanXReviewsFilterEnabled;
+            settings.MoreThanXReviews = MoreThanXReviews;
+            settings.IsDoesntHaveTagsFilterEnabled = IsDoesntHaveTagsFilterEnabled;
+            settings.DoesntHaveTags = DoesntHaveTags;
+            Serializer.SaveSettings(settings);
         }
     }
 }

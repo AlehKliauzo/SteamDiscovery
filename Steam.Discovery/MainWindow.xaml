@@ -11,7 +11,8 @@
                       Width="1000"
                       ResizeMode="CanResizeWithGrip"
                       BorderThickness="1"
-                      GlowBrush="SkyBlue">
+                      GlowBrush="SkyBlue"
+                      Closing="MetroWindow_Closing">
 
     <Grid>
         <Grid.ColumnDefinitions>

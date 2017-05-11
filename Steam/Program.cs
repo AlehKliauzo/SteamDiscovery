@@ -20,7 +20,7 @@ namespace Steam
 
         static void Main(string[] args)
         {
-            var games = GamesSerializer.Load();
+            var games = Serializer.LoadGames();
 
             //for (var i = 1; i <= 1; i++)
             //{
@@ -33,7 +33,7 @@ namespace Steam
             //CalculateScores(games);
             //FixHtmlEncodedCharacters(games);
             RemoveSpecialSymbolsInNames(games);
-            GamesSerializer.Save(games);
+            Serializer.SaveGames(games);
 
             Console.WriteLine("Done");
             Console.ReadLine();

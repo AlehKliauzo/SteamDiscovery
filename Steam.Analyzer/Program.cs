@@ -13,7 +13,7 @@ namespace Steam.Analyzer
     {
         static void Main(string[] args)
         {
-            var games = GamesSerializer.Load();
+            var games = Serializer.LoadGames();
 
             games = games.Where(x => x.ReleaseDate.Year >= 2010 && x.AllPositiveReviews + x.AllNegativeReviews >= 100).ToList();
             games = RemoveGamesWithTags(games, "Visual Novel", "Horror", "Early Access", "Pixel Graphics", "3D Platformer", "Puzzle", 
