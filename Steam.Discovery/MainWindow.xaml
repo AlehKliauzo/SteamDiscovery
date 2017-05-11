@@ -118,7 +118,7 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             
             <ListView Grid.Row="0"
@@ -203,6 +203,29 @@
             </ListView>
 
             <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal"
+                            Margin="5 2 0 2"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
+
+                    <TextBlock>
+                        <Hyperlink Command="{Binding PreviousPageCommand}">Previous</Hyperlink>
+                    </TextBlock>
+
+                    <TextBlock Margin="10 2 10 2">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}page {0} of {1}">
+                                <Binding Path="Page" />
+                                <Binding Path="PagesCount"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock>
+                        <Hyperlink Command="{Binding NextPageCommand}">Next</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+                
                 <TextBlock HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Margin="2 2 15 2">

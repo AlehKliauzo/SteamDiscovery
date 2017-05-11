@@ -1,4 +1,5 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Steam.Common;
 using System;
@@ -12,6 +13,7 @@ namespace Steam.Discovery.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        private const int gamesPerPage = 10;
         private List<Game> _allGames;
         private List<Game> _filteredGames;
         private bool _updatesSuspended;
@@ -155,6 +157,28 @@ namespace Steam.Discovery.ViewModel
             }
         }
 
+        private int _page;
+        public int Page
+        {
+            get { return _page; }
+            set
+            {
+                _page = value;
+                RaisePropertyChanged(() => Page);
+            }
+        }
+
+        private int _pagesCount;
+        public int PagesCount
+        {
+            get { return _pagesCount; }
+            set
+            {
+                _pagesCount = value;
+                RaisePropertyChanged(() => PagesCount);
+            }
+        }
+
         private string _resultsCount;
         public string ResultsCount
         {
@@ -168,6 +192,32 @@ namespace Steam.Discovery.ViewModel
 
         #endregion
 
+        #region Commands
+
+        private RelayCommand _nextPageCommand;
+        public RelayCommand NextPageCommand
+        {
+            get { return _nextPageCommand ?? (_nextPageCommand = new RelayCommand(NextPage)); }
+        }
+
+        private void NextPage()
+        {
+            ShowPage(Page + 1);
+        }
+
+        private RelayCommand _previousPageCommand;
+        public RelayCommand PreviousPageCommand
+        {
+            get { return _previousPageCommand ?? (_previousPageCommand = new RelayCommand(PreviousPage)); }
+        }
+
+        private void PreviousPage()
+        {
+            ShowPage(Page - 1);
+        }
+
+        #endregion
+
         private void FiltersChanged()
         {
             if (_updatesSuspended)
@@ -175,7 +225,7 @@ namespace Steam.Discovery.ViewModel
 
             IEnumerable<Game> games = _allGames;
 
-            if(IsNameContainsFilterEnabled)
+            if (IsNameContainsFilterEnabled)
             {
                 games = games.Where(x => x.Name.IndexOf(NameContains, StringComparison.InvariantCultureIgnoreCase) != -1);
             }
@@ -201,25 +251,44 @@ namespace Steam.Discovery.ViewModel
                 }
             }
 
-            if(IsHasTagsFilterEnabled)
+            if (IsHasTagsFilterEnabled)
             {
                 var tags = HasTags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).
                            Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList();
 
-                foreach(var tag in tags)
+                foreach (var tag in tags)
                 {
                     games = games.Where(x => x.Tags.Any(y => y.Equals(tag, StringComparison.InvariantCultureIgnoreCase)));
                 }
             }
 
             _filteredGames = games.OrderByDescending(x => x.WilsonScore).ToList();
-            var page = _filteredGames.Take(10).ToList();
-            Games = new ObservableCollection<Game>(page);
 
-            Messenger.Default.Send<string>("Games list changed");
-            //GamesChanged();
+            UpdatePaging();
+            ShowPage(1);
 
             ResultsCount = _filteredGames.Count.ToString();
+        }
+
+        private void UpdatePaging()
+        {
+            var totalPages = Math.Ceiling((double)_filteredGames.Count / (double)gamesPerPage);
+            PagesCount = (int)totalPages;
+        }
+
+        private void ShowPage(int page)
+        {
+            if (page < 1 || page > PagesCount)
+                return;
+
+            Page = page;
+
+            var skip = (page - 1) * gamesPerPage;
+
+            var games = _filteredGames.Skip(skip).Take(gamesPerPage).ToList();
+            Games = new ObservableCollection<Game>(games);
+
+            Messenger.Default.Send<Message>(Message.GamesListChanged);
         }
 
         private void Load()
@@ -230,10 +299,7 @@ namespace Steam.Discovery.ViewModel
                 _allGames = Serializer.LoadGames();
 
                 LoadSettings(settings);
-                //var games = _allGames.OrderByDescending(x => x.WilsonScore).Take(20).ToList();
-                //Games = new ObservableCollection<Game>(games);
-            }
-            );
+            });
         }
 
         private void LoadSettings(Settings settings)
@@ -273,7 +339,7 @@ namespace Steam.Discovery.ViewModel
 
         private void OnMessageReceived(Message message)
         {
-            if(message == Message.AppClosing)
+            if (message == Message.AppClosing)
             {
                 SaveSettings();
             }
