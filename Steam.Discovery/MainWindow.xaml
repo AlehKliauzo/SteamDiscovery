@@ -25,6 +25,22 @@
             <StackPanel Orientation="Vertical">
 
                 <CheckBox Margin="10 5 5 5"
+                          IsChecked="{Binding IsNameContainsFilterEnabled}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox IsReadOnly="True"
+                                 BorderThickness="0"
+                                 Text="name contains"/>
+
+                            <TextBox Width="80"
+                                     Text="{Binding NameContains, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0"
+                                 BorderThickness="0 0 0 1"/>
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+
+                <CheckBox Margin="10 5 5 5"
                           IsChecked="{Binding IsReleasedAfterFilterEnabled}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
@@ -71,6 +87,24 @@
 
                 <TextBox Width="250"
                          Text="{Binding DoesntHaveTags, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="100"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                 Margin="20 0 0 0"
+                                 BorderThickness="0 0 0 1"/>
+
+                <CheckBox Margin="10 5 5 5"
+                          IsChecked="{Binding IsHasTagsFilterEnabled}">
+                    <CheckBox.Content>
+                        <TextBox IsReadOnly="True"
+                                 BorderThickness="0"
+                                 Text="has tags"/>
+                    </CheckBox.Content>
+                </CheckBox>
+
+                <TextBox Width="250"
+                         Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
                                      Height="100"
                                      VerticalScrollBarVisibility="Auto"
                                      TextWrapping="Wrap"

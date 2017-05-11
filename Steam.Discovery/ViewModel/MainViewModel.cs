@@ -21,6 +21,30 @@ namespace Steam.Discovery.ViewModel
 
         #region Properties
 
+        private bool _isNameContainsFilterEnabled;
+        public bool IsNameContainsFilterEnabled
+        {
+            get { return _isNameContainsFilterEnabled; }
+            set
+            {
+                _isNameContainsFilterEnabled = value;
+                RaisePropertyChanged(() => IsNameContainsFilterEnabled);
+                FiltersChanged();
+            }
+        }
+
+        private string _nameContains;
+        public string NameContains
+        {
+            get { return _nameContains; }
+            set
+            {
+                _nameContains = value;
+                RaisePropertyChanged(() => NameContains);
+                FiltersChanged();
+            }
+        }
+
         private bool _isReleasedAfterFilterEnabled;
         public bool IsReleasedAfterFilterEnabled
         {
@@ -93,6 +117,30 @@ namespace Steam.Discovery.ViewModel
             }
         }
 
+        private bool _isHasTagsFilterEnabled;
+        public bool IsHasTagsFilterEnabled
+        {
+            get { return _isHasTagsFilterEnabled; }
+            set
+            {
+                _isHasTagsFilterEnabled = value;
+                RaisePropertyChanged(() => IsHasTagsFilterEnabled);
+                FiltersChanged();
+            }
+        }
+
+        private string _hasTags;
+        public string HasTags
+        {
+            get { return _hasTags; }
+            set
+            {
+                _hasTags = value;
+                RaisePropertyChanged(() => HasTags);
+                FiltersChanged();
+            }
+        }
+
         private ObservableCollection<Game> _games;
         public ObservableCollection<Game> Games
         {
@@ -113,6 +161,11 @@ namespace Steam.Discovery.ViewModel
 
             IEnumerable<Game> games = _allGames;
 
+            if(IsNameContainsFilterEnabled)
+            {
+                games = games.Where(x => x.Name.IndexOf(NameContains, StringComparison.InvariantCultureIgnoreCase) != -1);
+            }
+
             if (IsReleasedAfterFilterEnabled && DateTime.TryParse(ReleasedAfter, out DateTime releaseDate))
             {
                 games = games.Where(x => x.ReleaseDate > releaseDate);
@@ -130,7 +183,18 @@ namespace Steam.Discovery.ViewModel
 
                 foreach (var tag in tags)
                 {
-                    games = games.Where(x => x.Tags.All(y => y != tag));
+                    games = games.Where(x => x.Tags.All(y => !y.Equals(tag, StringComparison.InvariantCultureIgnoreCase)));
+                }
+            }
+
+            if(IsHasTagsFilterEnabled)
+            {
+                var tags = HasTags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).
+                           Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList();
+
+                foreach(var tag in tags)
+                {
+                    games = games.Where(x => x.Tags.Any(y => y.Equals(tag, StringComparison.InvariantCultureIgnoreCase)));
                 }
             }
 
@@ -156,12 +220,16 @@ namespace Steam.Discovery.ViewModel
         {
             _updatesSuspended = true;
 
+            IsNameContainsFilterEnabled = settings.IsNameContainsFilterEnabled;
+            NameContains = settings.NameContains;
             IsReleasedAfterFilterEnabled = settings.IsReleasedAfterFilterEnabled;
             ReleasedAfter = settings.ReleasedAfter;
             IsMoreThanXReviewsFilterEnabled = settings.IsMoreThanXReviewsFilterEnabled;
             MoreThanXReviews = settings.MoreThanXReviews;
             IsDoesntHaveTagsFilterEnabled = settings.IsDoesntHaveTagsFilterEnabled;
             DoesntHaveTags = settings.DoesntHaveTags;
+            IsHasTagsFilterEnabled = settings.IsHasTagsFilterEnabled;
+            HasTags = settings.HasTags; ;
 
             _updatesSuspended = false;
             FiltersChanged();
@@ -170,12 +238,16 @@ namespace Steam.Discovery.ViewModel
         public void SaveSettings()
         {
             var settings = new Settings();
+            settings.IsNameContainsFilterEnabled = IsNameContainsFilterEnabled;
+            settings.NameContains = NameContains;
             settings.IsReleasedAfterFilterEnabled = IsReleasedAfterFilterEnabled;
             settings.ReleasedAfter = ReleasedAfter;
             settings.IsMoreThanXReviewsFilterEnabled = IsMoreThanXReviewsFilterEnabled;
             settings.MoreThanXReviews = MoreThanXReviews;
             settings.IsDoesntHaveTagsFilterEnabled = IsDoesntHaveTagsFilterEnabled;
             settings.DoesntHaveTags = DoesntHaveTags;
+            settings.IsHasTagsFilterEnabled = IsHasTagsFilterEnabled;
+            settings.HasTags = HasTags;
             Serializer.SaveSettings(settings);
         }
     }
