@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steam", "Steam\Steam.csproj", "{E97B0B27-C8FF-4375-9084-C6566FA910D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steam.Common", "Steam.Common\Steam.Common.csproj", "{C7304C5C-6888-4427-B826-B1763418FB09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steam.Analyzer", "Steam.Analyzer\Steam.Analyzer.csproj", "{9C1C28AE-0669-48DC-8FEC-8EED7CF50FE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steam.Discovery", "Steam.Discovery\Steam.Discovery.csproj", "{4867C454-906B-470F-A659-7D460FA980C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E97B0B27-C8FF-4375-9084-C6566FA910D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E97B0B27-C8FF-4375-9084-C6566FA910D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E97B0B27-C8FF-4375-9084-C6566FA910D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E97B0B27-C8FF-4375-9084-C6566FA910D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7304C5C-6888-4427-B826-B1763418FB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7304C5C-6888-4427-B826-B1763418FB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7304C5C-6888-4427-B826-B1763418FB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7304C5C-6888-4427-B826-B1763418FB09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C1C28AE-0669-48DC-8FEC-8EED7CF50FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C1C28AE-0669-48DC-8FEC-8EED7CF50FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C1C28AE-0669-48DC-8FEC-8EED7CF50FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C1C28AE-0669-48DC-8FEC-8EED7CF50FE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4867C454-906B-470F-A659-7D460FA980C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4867C454-906B-470F-A659-7D460FA980C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4867C454-906B-470F-A659-7D460FA980C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4867C454-906B-470F-A659-7D460FA980C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

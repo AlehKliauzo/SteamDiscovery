@@ -1,0 +1,10 @@
+packages/
+Steam/bin/
+Steam/obj/
+Steam.Analyzer/bin/
+Steam.Analyzer/obj/
+Steam.Common/bin/
+Steam.Common/obj/
+Steam.Discovery/bin/
+Steam.Discovery/obj/
+.vs/
