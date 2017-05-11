@@ -11,7 +11,7 @@
                       MinWidth="800"
                       Width="1000"
                       ResizeMode="CanResizeWithGrip"
-                      BorderThickness="1"
+                      BorderThickness="1 0 1 1"
                       GlowBrush="SkyBlue"
                       Closing="MetroWindow_Closing">
 
@@ -208,11 +208,14 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left">
 
-                    <TextBlock>
-                        <Hyperlink Command="{Binding PreviousPageCommand}">Previous</Hyperlink>
+                    <TextBlock Text="&lt;&lt;&lt;"
+                               Cursor="Hand">
+                        <TextBlock.InputBindings>
+                            <MouseBinding Command="{Binding PreviousPageCommand}" MouseAction="LeftClick" />
+                        </TextBlock.InputBindings>
                     </TextBlock>
 
-                    <TextBlock Margin="10 2 10 2">
+                    <TextBlock Margin="10 0 10 0">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}page {0} of {1}">
                                 <Binding Path="Page" />
@@ -221,8 +224,11 @@
                         </TextBlock.Text>
                     </TextBlock>
 
-                    <TextBlock>
-                        <Hyperlink Command="{Binding NextPageCommand}">Next</Hyperlink>
+                    <TextBlock Text="&gt;&gt;&gt;"
+                               Cursor="Hand">
+                        <TextBlock.InputBindings>
+                            <MouseBinding Command="{Binding NextPageCommand}" MouseAction="LeftClick" />
+                        </TextBlock.InputBindings>
                     </TextBlock>
                 </StackPanel>
                 

@@ -262,12 +262,18 @@ namespace Steam.Discovery.ViewModel
                 }
             }
 
+            var previouslyFilteredGames = _filteredGames;
+
             _filteredGames = games.OrderByDescending(x => x.WilsonScore).ToList();
+            ResultsCount = _filteredGames.Count.ToString();
+
+            if(previouslyFilteredGames != null && previouslyFilteredGames.Count == _filteredGames.Count)
+            {
+                return;
+            }
 
             UpdatePaging();
             ShowPage(1);
-
-            ResultsCount = _filteredGames.Count.ToString();
         }
 
         private void UpdatePaging()
@@ -278,14 +284,25 @@ namespace Steam.Discovery.ViewModel
 
         private void ShowPage(int page)
         {
-            if (page < 1 || page > PagesCount)
+            if(PagesCount == 0)
+            {
+                Page = 0;
+                Games = new ObservableCollection<Game>();
                 return;
+            }
+
+            if (page < 1 || page > PagesCount)
+            {
+                Games = new ObservableCollection<Game>();
+                return;
+            }
 
             Page = page;
 
             var skip = (page - 1) * gamesPerPage;
 
             var games = _filteredGames.Skip(skip).Take(gamesPerPage).ToList();
+
             Games = new ObservableCollection<Game>(games);
 
             Messenger.Default.Send<Message>(Message.GamesListChanged);
