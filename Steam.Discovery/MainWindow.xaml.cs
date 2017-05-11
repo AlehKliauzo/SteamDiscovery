@@ -40,7 +40,7 @@ namespace Steam.Discovery
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var grid = (Grid)sender;
+            var grid = (FrameworkElement)sender;
             var tag = (string)grid.Tag;
             var url = "http://store.steampowered.com/app/" + tag;
             Process.Start(url);
@@ -49,6 +49,16 @@ namespace Steam.Discovery
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Messenger.Default.Send<Message>(Message.AppClosing);
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send<Message>(Message.DoesntHaveTagsFocused);
+        }
+
+        private void TextBox_GotFocus_1(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send<Message>(Message.HasTagsFocused);
         }
     }
 }

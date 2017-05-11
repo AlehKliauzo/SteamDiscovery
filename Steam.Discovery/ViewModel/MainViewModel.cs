@@ -216,6 +216,26 @@ namespace Steam.Discovery.ViewModel
             ShowPage(Page - 1);
         }
 
+        private RelayCommand<string> _addTagCommand;
+        public RelayCommand<string> AddTagCommand
+        {
+            get { return _addTagCommand ?? (_addTagCommand = new RelayCommand<string>(AddTag)); }
+        }
+
+        private void AddTag(string tag)
+        {
+            var textToAdd = tag + ", ";
+
+            if(_wasHasTagsControlLastFocused)
+            {
+                HasTags += textToAdd;
+            }
+            else
+            {
+                DoesntHaveTags += textToAdd;
+            }
+        }
+
         #endregion
 
         private void FiltersChanged()
@@ -354,11 +374,21 @@ namespace Steam.Discovery.ViewModel
             Serializer.SaveSettings(settings);
         }
 
+        private bool _wasHasTagsControlLastFocused = false;
+
         private void OnMessageReceived(Message message)
         {
-            if (message == Message.AppClosing)
+            switch(message)
             {
-                SaveSettings();
+                case Message.AppClosing:
+                    SaveSettings();
+                    break;
+                case Message.HasTagsFocused:
+                    _wasHasTagsControlLastFocused = true;
+                    break;
+                case Message.DoesntHaveTagsFocused:
+                    _wasHasTagsControlLastFocused = false;
+                    break;
             }
         }
     }

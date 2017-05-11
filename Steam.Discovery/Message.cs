@@ -9,6 +9,8 @@ namespace Steam.Discovery
     public enum Message
     {
         GamesListChanged, 
-        AppClosing
+        AppClosing,
+        DoesntHaveTagsFocused,
+        HasTagsFocused
     }
 }

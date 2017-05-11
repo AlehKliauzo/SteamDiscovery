@@ -17,8 +17,9 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="300"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"
+                              MinWidth="300" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0"
@@ -30,13 +31,13 @@
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBox IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="name contains"/>
+                                     BorderThickness="0"
+                                     Text="name contains" />
 
                             <TextBox Width="80"
                                      Text="{Binding NameContains, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0"
-                                 BorderThickness="0 0 0 1"/>
+                                     Margin="0"
+                                     BorderThickness="0 0 0 1" />
                         </StackPanel>
                     </CheckBox.Content>
                 </CheckBox>
@@ -46,13 +47,13 @@
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBox IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="released after"/>
+                                     BorderThickness="0"
+                                     Text="released after" />
 
                             <TextBox Width="80"
                                      Text="{Binding ReleasedAfter, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0"
-                                 BorderThickness="0 0 0 1"/>
+                                     Margin="0"
+                                     BorderThickness="0 0 0 1" />
                         </StackPanel>
                     </CheckBox.Content>
                 </CheckBox>
@@ -62,17 +63,17 @@
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBox IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="has more than"/>
+                                     BorderThickness="0"
+                                     Text="has more than" />
 
                             <TextBox Width="60"
                                      Text="{Binding MoreThanXReviews, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0"
-                                 BorderThickness="0 0 0 1"/>
+                                     Margin="0"
+                                     BorderThickness="0 0 0 1" />
 
                             <TextBox IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="reviews"/>
+                                     BorderThickness="0"
+                                     Text="reviews" />
                         </StackPanel>
                     </CheckBox.Content>
                 </CheckBox>
@@ -82,120 +83,148 @@
                     <CheckBox.Content>
                         <TextBox IsReadOnly="True"
                                  BorderThickness="0"
-                                 Text="doesn't have tags"/>
+                                 Text="doesn't have tags" />
                     </CheckBox.Content>
                 </CheckBox>
 
                 <TextBox Width="250"
                          Text="{Binding DoesntHaveTags, UpdateSourceTrigger=PropertyChanged}"
-                                     Height="100"
-                                     VerticalScrollBarVisibility="Auto"
-                                     TextWrapping="Wrap"
-                                     AcceptsReturn="True"
-                                 Margin="20 0 0 0"
-                                 BorderThickness="0 0 0 1"/>
+                         Height="150"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Margin="20 0 0 0"
+                         BorderThickness="0 0 0 1"
+                         GotFocus="TextBox_GotFocus"/>
 
                 <CheckBox Margin="10 5 5 5"
                           IsChecked="{Binding IsHasTagsFilterEnabled}">
                     <CheckBox.Content>
                         <TextBox IsReadOnly="True"
                                  BorderThickness="0"
-                                 Text="has tags"/>
+                                 Text="has tags" />
                     </CheckBox.Content>
                 </CheckBox>
 
                 <TextBox Width="250"
                          Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
-                                     Height="100"
-                                     VerticalScrollBarVisibility="Auto"
-                                     TextWrapping="Wrap"
-                                     AcceptsReturn="True"
-                                 Margin="20 0 0 0"
-                                 BorderThickness="0 0 0 1"/>
+                         Height="50"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Margin="20 0 0 0"
+                         BorderThickness="0 0 0 1" 
+                         GotFocus="TextBox_GotFocus_1"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
             </Grid.RowDefinitions>
-            
+
             <ListView Grid.Row="0"
-                        BorderThickness="0"
-                  ItemsSource="{Binding Games}"     
-              x:Name="GamesList"
-              Style="{StaticResource ListViewWithoutHighlighting}">
+                      BorderThickness="0"
+                      ItemsSource="{Binding Games}"
+                      x:Name="GamesList"
+                      Style="{StaticResource ListViewWithoutHighlighting}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="SkyBlue"
-                          Cursor="Hand"
-                          Tag="{Binding Id}"
-                          MouseLeftButtonDown="Grid_MouseLeftButtonDown"
-                      Margin="5">
+                              Margin="5">
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0"
-                               Text="{Binding Name}"
-                                   HorizontalAlignment="Left"
-                               VerticalAlignment="Bottom"
-                                   TextWrapping="Wrap"
-                               FontSize="25"
-                                   >
+                                       Text="{Binding Name}"
+                                       Style="{StaticResource TextBlockWithHover}"
+                                       Tag="{Binding Id}"
+                                       MouseLeftButtonDown="Grid_MouseLeftButtonDown"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       TextWrapping="Wrap"
+                                       FontSize="25">
                                 <TextBlock.Margin>
                                     <MultiBinding Converter="{StaticResource ListWidthToNameMarginConverter}">
-                                        <Binding Path="ActualWidth" ElementName="GamesList"/>
-                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                        <Binding Path="ActualWidth"
+                                                 ElementName="GamesList" />
+                                        <Binding Path="ActualWidth"
+                                                 RelativeSource="{RelativeSource Self}" />
                                     </MultiBinding>
                                 </TextBlock.Margin>
                             </TextBlock>
 
-                            <TextBlock Grid.Row="0"   
-                               FontSize="12"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Top"
-                               Margin="0 2 5 2">
+                            <TextBlock Grid.Row="0"
+                                       FontSize="12"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Top"
+                                       Margin="0 2 5 2">
                                 <TextBlock.Text>
-                                    <Binding StringFormat="{}Release date: {0:yyyy.MM.dd}" Path="ReleaseDate"/>
+                                    <Binding StringFormat="{}Release date: {0:yyyy.MM.dd}"
+                                             Path="ReleaseDate" />
                                 </TextBlock.Text>
                             </TextBlock>
 
                             <Grid Grid.Row="1"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="180"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
 
                                 <StackPanel Orientation="Vertical"
-                                    Grid.Column="0"
-                                    Margin="5 0 5 5">
+                                            Grid.Column="0"
+                                            Margin="5 0 5 5">
 
                                     <TextBlock Text="{Binding WilsonScore, StringFormat='F2'}"
-                                       FontSize="16"/>
+                                               FontSize="16" />
 
                                     <TextBlock FontSize="12">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0} reviews, {1} positive">
                                                 <Binding Path="AllTotalReviews" />
-                                                <Binding Path="AllPositiveReviews"/>
+                                                <Binding Path="AllPositiveReviews" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <TextBlock Grid.Column="1"
-                                   FontSize="14"
-                                   MinWidth="200"
-                                   Width="{Binding ActualWidth, ElementName=GamesList, Converter={StaticResource GamesListToTagsTextBlockWidthConverter}}"
-                                   Text="{Binding Tags, Converter={StaticResource CollectionToStringConverter}}"
-                                   TextWrapping="Wrap"
-                                   Margin="10 0 5 5"/>
+                                <ItemsControl Grid.Column="1"
+                                              ItemsSource="{Binding Tags}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=.}"
+                                                       Margin="5 1 5 1"
+                                                       Padding="2 0 2 0"
+                                                       Style="{StaticResource TextBlockWithHover}">
+                                                <TextBlock.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick" 
+                                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, 
+                                                                            Path=DataContext.AddTagCommand}"
+                                                                  CommandParameter="{Binding Path=.}"/>
+                                                </TextBlock.InputBindings>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!--<TextBlock Grid.Column="1"
+                                           FontSize="14"
+                                           MinWidth="200"
+                                           Width="{Binding ActualWidth, ElementName=GamesList, Converter={StaticResource GamesListToTagsTextBlockWidthConverter}}"
+                                           Text="{Binding Tags, Converter={StaticResource CollectionToStringConverter}}"
+                                           TextWrapping="Wrap"
+                                           Margin="10 0 5 5" />-->
                             </Grid>
                         </Grid>
                     </DataTemplate>
@@ -211,7 +240,8 @@
                     <TextBlock Text="&lt;&lt;&lt;"
                                Cursor="Hand">
                         <TextBlock.InputBindings>
-                            <MouseBinding Command="{Binding PreviousPageCommand}" MouseAction="LeftClick" />
+                            <MouseBinding Command="{Binding PreviousPageCommand}"
+                                          MouseAction="LeftClick" />
                         </TextBlock.InputBindings>
                     </TextBlock>
 
@@ -219,7 +249,7 @@
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}page {0} of {1}">
                                 <Binding Path="Page" />
-                                <Binding Path="PagesCount"/>
+                                <Binding Path="PagesCount" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
@@ -227,16 +257,18 @@
                     <TextBlock Text="&gt;&gt;&gt;"
                                Cursor="Hand">
                         <TextBlock.InputBindings>
-                            <MouseBinding Command="{Binding NextPageCommand}" MouseAction="LeftClick" />
+                            <MouseBinding Command="{Binding NextPageCommand}"
+                                          MouseAction="LeftClick" />
                         </TextBlock.InputBindings>
                     </TextBlock>
                 </StackPanel>
-                
+
                 <TextBlock HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Margin="2 2 15 2">
                     <TextBlock.Text>
-                        <Binding StringFormat="{}{0} results" Path="ResultsCount"/>
+                        <Binding StringFormat="{}{0} results"
+                                 Path="ResultsCount" />
                     </TextBlock.Text>
                 </TextBlock>
             </Grid>
