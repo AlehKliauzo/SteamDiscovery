@@ -22,19 +22,58 @@ namespace Steam
         {
             var games = GamesSerializer.Load();
 
-            for (var i = 1; i <= 1; i++)
-            {
-                GetInfoForAllGamesOnTheSearchPage(i, games);
-                GamesSerializer.Save(games);
-            }
+            //for (var i = 1; i <= 1; i++)
+            //{
+            //    GetInfoForAllGamesOnTheSearchPage(i, games);
+            //    GamesSerializer.Save(games);
+            //}
 
-            ConsistencyCheck(games);
+            //ConsistencyCheck(games);
 
-            CalculateScores(games);
+            //CalculateScores(games);
+            //FixHtmlEncodedCharacters(games);
+            RemoveSpecialSymbolsInNames(games);
             GamesSerializer.Save(games);
 
             Console.WriteLine("Done");
             Console.ReadLine();
+        }
+
+        private static void RemoveSpecialSymbolsInNames(List<Game> games)
+        {
+            foreach (var game in games)
+            {
+                var name = game.Name;
+
+                name = name.Replace("\u2122", "");
+                name = name.Replace("\u0099", "");
+                name = name.Replace("\u00ae", "");
+
+                game.Name = name;
+            }
+        }
+
+        private static void FixHtmlEncodedCharacters(List<Game> games)
+        {
+            var htmlEncodedAmpersand = "&amp;";
+            var usualAmpersand = "&";
+
+            foreach (var game in games)
+            {
+                if (game.Name.Contains(htmlEncodedAmpersand))
+                {
+                    game.Name = game.Name.Replace(htmlEncodedAmpersand, usualAmpersand);
+                }
+
+                var tagsWithAmpersands = game.Tags.Where(x => x.Contains(htmlEncodedAmpersand)).ToList();
+
+                foreach (var tag in tagsWithAmpersands)
+                {
+                    game.Tags.Remove(tag);
+                    var fixedTag = tag.Replace(htmlEncodedAmpersand, usualAmpersand);
+                    game.Tags.Add(fixedTag);
+                }
+            }
         }
 
         private static void CalculateScores(List<Game> games)
@@ -60,8 +99,8 @@ namespace Steam
             foreach (var game in games)
             {
                 var idCount = games.Count(x => x.Id == game.Id);
-         
-                if(game.ReleaseDate == defaultReleaseDate)
+
+                if (game.ReleaseDate == defaultReleaseDate)
                 {
                     gamesWithNoReleaseDate.Add(game.Id);
                 }
@@ -85,7 +124,7 @@ namespace Steam
                 Console.WriteLine(output);
             }
 
-            foreach(var game in gamesWithNoReleaseDate)
+            foreach (var game in gamesWithNoReleaseDate)
             {
                 var output = $"Game with id {game} has no release date";
                 Console.WriteLine(output);

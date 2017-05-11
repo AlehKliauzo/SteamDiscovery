@@ -7,9 +7,11 @@
                       TitleCharacterCasing="Normal"
                       TitleAlignment="Center"
                       Height="600"
-                      MinWidth="500"
-                      Width="800"
-                      ResizeMode="CanResizeWithGrip">
+                      MinWidth="800"
+                      Width="1000"
+                      ResizeMode="CanResizeWithGrip"
+                      BorderThickness="1"
+                      GlowBrush="SkyBlue">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,7 +23,7 @@
               VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
 
-                <CheckBox Margin="5"
+                <CheckBox Margin="10 5 5 5"
                           IsChecked="{Binding IsReleasedAfterFilterEnabled}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
@@ -37,7 +39,7 @@
                     </CheckBox.Content>
                 </CheckBox>
 
-                <CheckBox Margin="5"
+                <CheckBox Margin="10 5 5 5"
                           IsChecked="{Binding IsMoreThanXReviewsFilterEnabled}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
@@ -57,7 +59,7 @@
                     </CheckBox.Content>
                 </CheckBox>
 
-                <CheckBox Margin="5"
+                <CheckBox Margin="10 5 5 5"
                           IsChecked="{Binding IsDoesntHaveTagsFilterEnabled}">
                     <CheckBox.Content>
                         <TextBox IsReadOnly="True"
@@ -86,6 +88,9 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Background="SkyBlue"
+                          Cursor="Hand"
+                          Tag="{Binding Id}"
+                          MouseLeftButtonDown="Grid_MouseLeftButtonDown"
                       Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -94,15 +99,24 @@
 
                         <TextBlock Grid.Row="0"
                                Text="{Binding Name}"
+                                   HorizontalAlignment="Left"
                                VerticalAlignment="Bottom"
+                                   TextWrapping="Wrap"
                                FontSize="25"
-                               Margin="5 5 5 5"/>
+                                   >
+                            <TextBlock.Margin>
+                                <MultiBinding Converter="{StaticResource ListWidthToNameMarginConverter}">
+                                    <Binding Path="ActualWidth" ElementName="GamesList"/>
+                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                </MultiBinding>
+                            </TextBlock.Margin>
+                        </TextBlock>
 
                         <TextBlock Grid.Row="0"   
                                FontSize="12"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
-                               Margin="0 5 5 0">
+                               Margin="0 2 5 2">
                             <TextBlock.Text>
                                 <Binding StringFormat="{}Release date: {0:yyyy.MM.dd}" Path="ReleaseDate"/>
                             </TextBlock.Text>

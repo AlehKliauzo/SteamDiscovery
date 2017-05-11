@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,14 @@ namespace Steam.Discovery
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = (Grid)sender;
+            var tag = (string)grid.Tag;
+            var url = "http://store.steampowered.com/app/" + tag;
+            Process.Start(url);
         }
     }
 }

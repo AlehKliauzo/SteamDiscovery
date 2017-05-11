@@ -74,6 +74,7 @@
     </ApplicationDefinition>
     <Compile Include="CollectionToStringConverter.cs" />
     <Compile Include="GamesListToTagsTextBlockWidthConverter.cs" />
+    <Compile Include="ListWidthToNameMarginConverter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

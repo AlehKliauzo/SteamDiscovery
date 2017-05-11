@@ -22,6 +22,7 @@
             
             <local:GamesListToTagsTextBlockWidthConverter x:Key="GamesListToTagsTextBlockWidthConverter"/>
             <local:CollectionToStringConverter x:Key="CollectionToStringConverter"/>
+            <local:ListWidthToNameMarginConverter x:Key="ListWidthToNameMarginConverter"/>
 
             <Style x:Key="ListViewWithoutHighlighting" TargetType="ListView">
                 <Style.Setters>
