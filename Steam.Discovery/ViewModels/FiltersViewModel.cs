@@ -1,12 +1,16 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Steam.Common;
+using Steam.Discovery.Models;
 using Steam.Discovery.Views;
 
 namespace Steam.Discovery.ViewModels
@@ -17,15 +21,28 @@ namespace Steam.Discovery.ViewModels
         private bool _wasHasTagsControlLastFocused = false;
 
         private TagsWindow _tagsWindow;
-        private TagsViewModel _tagsViewModel;
+        private readonly TagsViewModel _tagsViewModel;
 
         public FiltersViewModel(List<Tag> tags)
         {
+            SelectedTab = SelectedTab.SoftFilters;
             _tagsViewModel = new TagsViewModel(tags);
-            Messenger.Default.Register<Message>(this, OnMessageReceived);
+
+            AppMessenger.RegisterForMessage(this, OnMessageReceived);
         }
 
         #region Properties 
+
+        private SelectedTab _selectedTab;
+        public SelectedTab SelectedTab
+        {
+            get { return _selectedTab; }
+            set
+            {
+                _selectedTab = value;
+                RaisePropertyChanged(() => SelectedTab);
+            }
+        }
 
         private bool _isNameContainsFilterEnabled;
         public bool IsNameContainsFilterEnabled
@@ -147,6 +164,18 @@ namespace Steam.Discovery.ViewModels
             }
         }
 
+        private string _softTags;
+        public string SoftTags
+        {
+            get { return _softTags; }
+            set
+            {
+                _softTags = value;
+                RaisePropertyChanged(() => SoftTags);
+                FiltersChanged();
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -176,15 +205,23 @@ namespace Steam.Discovery.ViewModels
 
         private void AddTag(string tag)
         {
-            var textToAdd = tag + ", ";
-
-            if (_wasHasTagsControlLastFocused)
+            if (SelectedTab == SelectedTab.HardFilters)
             {
-                HasTags += textToAdd;
+                var textToAdd = tag + ", ";
+
+                if (_wasHasTagsControlLastFocused)
+                {
+                    HasTags += textToAdd;
+                }
+                else
+                {
+                    DoesntHaveTags += textToAdd;
+                }
             }
             else
             {
-                DoesntHaveTags += textToAdd;
+                var textToAdd = tag + " 0, ";
+                SoftTags += textToAdd;
             }
         }
 
@@ -204,6 +241,7 @@ namespace Steam.Discovery.ViewModels
             DoesntHaveTags = settings.DoesntHaveTags;
             IsHasTagsFilterEnabled = settings.IsHasTagsFilterEnabled;
             HasTags = settings.HasTags;
+            SoftTags = settings.SoftTags;
 
             _updatesSuspended = false;
             FiltersChanged();
@@ -222,6 +260,7 @@ namespace Steam.Discovery.ViewModels
             settings.DoesntHaveTags = DoesntHaveTags;
             settings.IsHasTagsFilterEnabled = IsHasTagsFilterEnabled;
             settings.HasTags = HasTags;
+            settings.SoftTags = SoftTags;
             return settings;
         }
 
@@ -236,21 +275,24 @@ namespace Steam.Discovery.ViewModels
             if (_updatesSuspended)
                 return;
 
-            Messenger.Default.Send<Message>(Message.FiltersChanged);
+            AppMessenger.SendMessage(AppAction.FiltersChanged);
         }
 
         private void OnMessageReceived(Message message)
         {
-            switch (message)
+            switch (message.Action)
             {
-                case Message.AppClosing:
+                case AppAction.AppClosing:
                     SaveFilters();
                     break;
-                case Message.HasTagsFocused:
+                case AppAction.HasTagsFocused:
                     _wasHasTagsControlLastFocused = true;
                     break;
-                case Message.DoesntHaveTagsFocused:
+                case AppAction.DoesntHaveTagsFocused:
                     _wasHasTagsControlLastFocused = false;
+                    break;
+                case AppAction.TagSelected:
+                    AddTag((string)message.Data);
                     break;
             }
         }

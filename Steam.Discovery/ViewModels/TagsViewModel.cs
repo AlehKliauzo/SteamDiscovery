@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using Steam.Discovery.Models;
 
 namespace Steam.Discovery.ViewModels
 {
     public class TagsViewModel : ViewModelBase
     {
-        private List<Tag> _allTags;
+        private readonly List<Tag> _allTags;
 
         public TagsViewModel(List<Tag> tags)
         {
@@ -41,6 +44,21 @@ namespace Steam.Discovery.ViewModels
                 _tags = value;
                 RaisePropertyChanged(() => Tags);
             }
+        }
+
+        #endregion
+
+        #region Commands
+
+        private RelayCommand<string> _addTagCommand;
+        public RelayCommand<string> AddTagCommand
+        {
+            get { return _addTagCommand ?? (_addTagCommand = new RelayCommand<string>(AddTag)); }
+        }
+
+        private void AddTag(string tag)
+        {
+            AppMessenger.SendMessage(AppAction.TagSelected, tag);
         }
 
         #endregion

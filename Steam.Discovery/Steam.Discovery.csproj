@@ -72,18 +72,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppMessenger.cs" />
     <Compile Include="Converters\CollectionToStringConverter.cs" />
     <Compile Include="Converters\GamesListToTagsTextBlockWidthConverter.cs" />
     <Compile Include="Converters\ListWidthToNameMarginConverter.cs" />
-    <Compile Include="Message.cs" />
+    <Compile Include="Converters\SelectedTabToIndexConverter.cs" />
+    <Compile Include="Models\AppAction.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\SelectedTab.cs" />
+    <Compile Include="Views\FiltersControl.xaml.cs">
+      <DependentUpon>FiltersControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TagsWindow.xaml.cs">
       <DependentUpon>TagsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\FiltersViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\TagsViewModel.cs" />
-    <Compile Include="ViewModels\TagSympathyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Page Include="Views\FiltersControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -134,5 +144,6 @@
       <Name>Steam.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

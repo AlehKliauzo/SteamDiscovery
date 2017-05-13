@@ -24,6 +24,9 @@ namespace Steam.Common
         [JsonIgnore]
         public double PreferenceScore { get; set; }
 
+        [JsonIgnore]
+        public double TotalScore { get; set; }
+
         public Game()
         {
             Tags = new List<string>();

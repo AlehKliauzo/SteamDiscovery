@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Steam.Discovery.Models;
 
 namespace Steam.Discovery.ViewModels
 {
@@ -17,12 +18,11 @@ namespace Steam.Discovery.ViewModels
         private const int gamesPerPage = 10;
         private List<Game> _allGames;
         private List<Game> _filteredGames;
-        private bool _updatesSuspended;
 
         public MainViewModel()
         {
             Load();
-            Messenger.Default.Register<Message>(this, OnMessageReceived);
+            AppMessenger.RegisterForMessage(this, OnMessageReceived);
         }
 
         #region Properties
@@ -112,11 +112,22 @@ namespace Steam.Discovery.ViewModels
 
         private void FiltersChanged()
         {
-            if (_updatesSuspended)
-                return;
-
-            IEnumerable<Game> games = _allGames;
+            //TODO: compare filter settings to previous
             var filters = Filters.GetFilters();
+            var games = ApplyHardFilters(_allGames, filters);
+            games = ApplySoftFilters(games, filters);
+
+            _filteredGames = games.OrderByDescending(x => x.TotalScore).ToList();
+            //_filteredGames = games.OrderByDescending(x => x.PreferenceScore).ThenByDescending(x => x.WilsonScore).ToList();
+            ResultsCount = _filteredGames.Count.ToString();
+
+            UpdatePaging();
+            ShowPage(1);
+        }
+
+        private List<Game> ApplyHardFilters(List<Game> source, Filters filters)
+        {
+            IEnumerable<Game> games = source;
 
             if (filters.IsNameContainsFilterEnabled)
             {
@@ -135,8 +146,7 @@ namespace Steam.Discovery.ViewModels
 
             if (filters.IsDoesntHaveTagsFilterEnabled)
             {
-                var tags = filters.DoesntHaveTags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).
-                           Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList();
+                var tags = SplitStringOnCommas(filters.DoesntHaveTags);
 
                 foreach (var tag in tags)
                 {
@@ -146,8 +156,7 @@ namespace Steam.Discovery.ViewModels
 
             if (filters.IsHasTagsFilterEnabled)
             {
-                var tags = filters.HasTags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).
-                           Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList();
+                var tags = SplitStringOnCommas(filters.HasTags);
 
                 foreach (var tag in tags)
                 {
@@ -155,18 +164,65 @@ namespace Steam.Discovery.ViewModels
                 }
             }
 
-            var previouslyFilteredGames = _filteredGames;
+            return games.ToList();
+        }
 
-            _filteredGames = games.OrderByDescending(x => x.WilsonScore).ToList();
-            ResultsCount = _filteredGames.Count.ToString();
+        private List<string> SplitStringOnCommas(string text)
+        {
+            var entries = text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).
+                Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
 
-            if (previouslyFilteredGames != null && previouslyFilteredGames.Count == _filteredGames.Count)
+            return entries;
+        }
+
+        private List<Game> ApplySoftFilters(List<Game> games, Filters filters)
+        {
+            var preferences = new Dictionary<string, double>();
+
+            if (string.IsNullOrEmpty(filters.SoftTags))
             {
-                return;
+                return games;
             }
 
-            UpdatePaging();
-            ShowPage(1);
+            var allTags = SplitStringOnCommas(filters.SoftTags);
+
+            foreach (var tag in allTags)
+            {
+                var lastWhitespace = tag.LastIndexOf(' ');
+
+                if (lastWhitespace == -1)
+                {
+                    continue;
+                }
+
+                var tagName = tag.Substring(0, lastWhitespace);
+                var tagValue = tag.Substring(lastWhitespace);
+
+                if (double.TryParse(tagValue, out double value))
+                {
+                    preferences.Add(tagName, value / 100.0);
+                }
+            }
+
+            foreach (var game in games)
+            {
+                var tags = game.Tags;
+                var tagWeight = 0.3 + 1.0 / tags.Count;
+                var score = 0.0;
+
+                foreach (var tag in tags)
+                {
+                    if (preferences.ContainsKey(tag))
+                    {
+                        score += tagWeight * preferences[tag];
+                    }
+                }
+
+                game.PreferenceScore = score;
+                game.TotalScore = game.WilsonScore * game.PreferenceScore;
+            }
+
+            return games;
         }
 
         private void UpdatePaging()
@@ -198,7 +254,7 @@ namespace Steam.Discovery.ViewModels
 
             Games = new List<Game>(games);
 
-            Messenger.Default.Send<Message>(Message.GamesListChanged);
+            AppMessenger.SendMessage(AppAction.GamesListChanged);
         }
 
         private async void Load()
@@ -206,7 +262,7 @@ namespace Steam.Discovery.ViewModels
             await Task.Run(() =>
             {
                 var settings = Serializer.LoadSettings();
-                _allGames = Serializer.LoadGames();
+                _allGames = Serializer.LoadGames().Where(x => x.Tags.Count >= 5 && x.WilsonScore > 70).ToList();
 
                 Dictionary<string, int> tags = new Dictionary<string, int>();
 
@@ -233,9 +289,9 @@ namespace Steam.Discovery.ViewModels
 
         private void OnMessageReceived(Message message)
         {
-            switch (message)
+            switch (message.Action)
             {
-                case Message.FiltersChanged:
+                case AppAction.FiltersChanged:
                     FiltersChanged();
                     break;
             }

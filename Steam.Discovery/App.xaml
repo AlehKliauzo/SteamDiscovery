@@ -25,6 +25,7 @@
             <converters:GamesListToTagsTextBlockWidthConverter x:Key="GamesListToTagsTextBlockWidthConverter" />
             <converters:CollectionToStringConverter x:Key="CollectionToStringConverter" />
             <converters:ListWidthToNameMarginConverter x:Key="ListWidthToNameMarginConverter" />
+            <converters:SelectedTabToIndexConverter x:Key="SelectedTabToIndexConverter"/>
 
             <Style x:Key="TextBlockWithHover" 
                    TargetType="TextBlock">

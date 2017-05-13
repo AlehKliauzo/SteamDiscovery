@@ -22,5 +22,7 @@ namespace Steam.Common
 
         public bool IsHasTagsFilterEnabled { get; set; }
         public string HasTags { get; set; }
+
+        public string SoftTags { get; set; }
     }
 }
