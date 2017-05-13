@@ -18,6 +18,9 @@ namespace Steam.Discovery.ViewModel
         private List<Game> _filteredGames;
         private bool _updatesSuspended;
 
+        private TagsWindow _tagsWindow;
+        private TagsViewModel _tagsViewModel;
+
         public MainViewModel()
         {
             Load();
@@ -146,8 +149,8 @@ namespace Steam.Discovery.ViewModel
             }
         }
 
-        private ObservableCollection<Game> _games;
-        public ObservableCollection<Game> Games
+        private List<Game> _games;
+        public List<Game> Games
         {
             get { return _games; }
             private set
@@ -226,7 +229,7 @@ namespace Steam.Discovery.ViewModel
         {
             var textToAdd = tag + ", ";
 
-            if(_wasHasTagsControlLastFocused)
+            if (_wasHasTagsControlLastFocused)
             {
                 HasTags += textToAdd;
             }
@@ -234,6 +237,23 @@ namespace Steam.Discovery.ViewModel
             {
                 DoesntHaveTags += textToAdd;
             }
+        }
+
+        private RelayCommand _showTagsWindowCommand;
+        public RelayCommand ShowTagsWindowCommand
+        {
+            get { return _showTagsWindowCommand ?? (_showTagsWindowCommand = new RelayCommand(ShowTagsWindow)); }
+        }
+
+        private void ShowTagsWindow()
+        {
+            if (_tagsWindow == null)
+            {
+                _tagsWindow = new TagsWindow();
+                _tagsWindow.DataContext = _tagsViewModel;
+            }
+
+            _tagsWindow.Show();
         }
 
         #endregion
@@ -287,7 +307,7 @@ namespace Steam.Discovery.ViewModel
             _filteredGames = games.OrderByDescending(x => x.WilsonScore).ToList();
             ResultsCount = _filteredGames.Count.ToString();
 
-            if(previouslyFilteredGames != null && previouslyFilteredGames.Count == _filteredGames.Count)
+            if (previouslyFilteredGames != null && previouslyFilteredGames.Count == _filteredGames.Count)
             {
                 return;
             }
@@ -304,16 +324,16 @@ namespace Steam.Discovery.ViewModel
 
         private void ShowPage(int page)
         {
-            if(PagesCount == 0)
+            if (PagesCount == 0)
             {
                 Page = 0;
-                Games = new ObservableCollection<Game>();
+                Games = new List<Game>();
                 return;
             }
 
             if (page < 1 || page > PagesCount)
             {
-                Games = new ObservableCollection<Game>();
+                Games = new List<Game>();
                 return;
             }
 
@@ -323,7 +343,7 @@ namespace Steam.Discovery.ViewModel
 
             var games = _filteredGames.Skip(skip).Take(gamesPerPage).ToList();
 
-            Games = new ObservableCollection<Game>(games);
+            Games = new List<Game>(games);
 
             Messenger.Default.Send<Message>(Message.GamesListChanged);
         }
@@ -336,6 +356,27 @@ namespace Steam.Discovery.ViewModel
                 _allGames = Serializer.LoadGames();
 
                 LoadSettings(settings);
+
+                Dictionary<string, int> tags = new Dictionary<string, int>();
+
+                foreach (var game in _allGames)
+                {
+                    foreach (var tag in game.Tags)
+                    {
+                        if (tags.ContainsKey(tag))
+                        {
+                            tags[tag]++;
+                        }
+                        else
+                        {
+                            tags.Add(tag, 1);
+                        }
+                    }
+                }
+
+                var tagsList = tags.Select(x => new Tag { Name = x.Key, GamesCount = x.Value }).ToList();
+                _tagsViewModel = new TagsViewModel(tagsList);
+
             });
         }
 
@@ -378,7 +419,7 @@ namespace Steam.Discovery.ViewModel
 
         private void OnMessageReceived(Message message)
         {
-            switch(message)
+            switch (message)
             {
                 case Message.AppClosing:
                     SaveSettings();

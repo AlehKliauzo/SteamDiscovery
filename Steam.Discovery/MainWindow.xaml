@@ -81,9 +81,21 @@
                 <CheckBox Margin="10 5 5 5"
                           IsChecked="{Binding IsDoesntHaveTagsFilterEnabled}">
                     <CheckBox.Content>
-                        <TextBox IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="doesn't have tags" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox IsReadOnly="True"
+                                     BorderThickness="0"
+                                     Text="doesn't have tags" />
+
+                            <TextBox Text="Tags"
+                                     Cursor="Hand"
+                                     IsReadOnly="True"
+                                     BorderThickness="0">
+                                <TextBox.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick"
+                                                  Command="{Binding ShowTagsWindowCommand}" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                        </StackPanel>
                     </CheckBox.Content>
                 </CheckBox>
 
@@ -95,7 +107,7 @@
                          AcceptsReturn="True"
                          Margin="20 0 0 0"
                          BorderThickness="0 0 0 1"
-                         GotFocus="TextBox_GotFocus"/>
+                         GotFocus="TextBox_GotFocus" />
 
                 <CheckBox Margin="10 5 5 5"
                           IsChecked="{Binding IsHasTagsFilterEnabled}">
@@ -113,8 +125,8 @@
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
                          Margin="20 0 0 0"
-                         BorderThickness="0 0 0 1" 
-                         GotFocus="TextBox_GotFocus_1"/>
+                         BorderThickness="0 0 0 1"
+                         GotFocus="TextBox_GotFocus_1" />
             </StackPanel>
         </Grid>
 
@@ -208,10 +220,10 @@
                                                        Padding="2 0 2 0"
                                                        Style="{StaticResource TextBlockWithHover}">
                                                 <TextBlock.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" 
+                                                    <MouseBinding MouseAction="LeftClick"
                                                                   Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, 
                                                                             Path=DataContext.AddTagCommand}"
-                                                                  CommandParameter="{Binding Path=.}"/>
+                                                                  CommandParameter="{Binding Path=.}" />
                                                 </TextBlock.InputBindings>
                                             </TextBlock>
                                         </DataTemplate>

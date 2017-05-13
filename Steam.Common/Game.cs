@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Steam.Common
@@ -19,6 +20,9 @@ namespace Steam.Common
         public double WilsonScore { get; set; }
 
         public DateTime InfoDownloaded { get; set; }
+
+        [JsonIgnore]
+        public double PreferenceScore { get; set; }
 
         public Game()
         {
