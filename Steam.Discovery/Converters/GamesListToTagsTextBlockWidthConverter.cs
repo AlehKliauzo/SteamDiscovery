@@ -6,18 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Steam.Discovery
+namespace Steam.Discovery.Converters
 {
-    class CollectionToStringConverter : IValueConverter
+    class GamesListToTagsTextBlockWidthConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is IEnumerable<string>)
+            if(value is double)
             {
-                return string.Join(", ", (IEnumerable<string>)value);
+                return (double)value - 250;
             }
 
-            return string.Empty;
+            return 300;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

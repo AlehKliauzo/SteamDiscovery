@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
-using Steam.Discovery.ViewModel;
+using Steam.Discovery.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Steam.Discovery
+namespace Steam.Discovery.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

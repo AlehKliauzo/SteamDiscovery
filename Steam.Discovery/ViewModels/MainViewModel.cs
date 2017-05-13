@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Steam.Common;
+using Steam.Discovery.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Steam.Discovery.ViewModel
+namespace Steam.Discovery.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {

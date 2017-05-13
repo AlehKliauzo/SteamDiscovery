@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Steam.Discovery.ViewModel
+namespace Steam.Discovery.ViewModels
 {
     public class TagsViewModel : ViewModelBase
     {

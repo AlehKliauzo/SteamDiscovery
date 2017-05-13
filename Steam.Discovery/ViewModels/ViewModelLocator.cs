@@ -2,7 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
-namespace Steam.Discovery.ViewModel
+namespace Steam.Discovery.ViewModels
 {
     public class ViewModelLocator
     {

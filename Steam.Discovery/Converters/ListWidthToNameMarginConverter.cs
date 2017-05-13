@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Steam.Discovery
+namespace Steam.Discovery.Converters
 {
     class ListWidthToNameMarginConverter : IMultiValueConverter
     {
