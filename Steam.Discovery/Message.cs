@@ -12,6 +12,7 @@ namespace Steam.Discovery
         AppClosing,
         DoesntHaveTagsFocused,
         HasTagsFocused,
+        FiltersChanged,
         TagSympathyChanged
     }
 }

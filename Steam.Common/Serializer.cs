@@ -30,18 +30,18 @@ namespace Steam.Common
             File.WriteAllText(Games, json);
         }
 
-        public static Settings LoadSettings()
+        public static Filters LoadSettings()
         {
             if (File.Exists(Settings))
             {
                 var json = File.ReadAllText(Settings);
-                return JsonConvert.DeserializeObject<Settings>(json);
+                return JsonConvert.DeserializeObject<Filters>(json);
             }
 
-            return new Settings();
+            return new Filters();
         }
 
-        public static void SaveSettings(Settings settings)
+        public static void SaveSettings(Filters settings)
         {
             var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(Settings, json);

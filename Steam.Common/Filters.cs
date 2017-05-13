@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Steam.Common
 {
-    public class Settings
+    public class Filters
     {
         public bool IsNameContainsFilterEnabled { get; set; }
         public string NameContains { get; set; }

@@ -1,7 +1,7 @@
-﻿<Controls:MetroWindow x:Class="Steam.Discovery.Views.MainWindow"
+﻿<controls:MetroWindow x:Class="Steam.Discovery.Views.MainWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
                       Title="Steam Discovery"
                       TitleCharacterCasing="Normal"
@@ -26,7 +26,8 @@
               VerticalAlignment="Top">
             <TabControl Margin="5 5 5 5">
                 <TabItem Header="Hard filters"
-                         Controls:ControlsHelper.HeaderFontSize="18">
+                         DataContext="{Binding Filters}"
+                         controls:ControlsHelper.HeaderFontSize="18">
                     <StackPanel Orientation="Vertical">
 
                         <CheckBox Margin="5 5 5 5"
@@ -134,7 +135,7 @@
                 </TabItem>
 
                 <TabItem Header="Soft filters"
-                         Controls:ControlsHelper.HeaderFontSize="18">
+                         controls:ControlsHelper.HeaderFontSize="18">
                     <StackPanel Orientation="Vertical">
                         <ListView>
 
@@ -236,7 +237,7 @@
                                                 <TextBlock.InputBindings>
                                                     <MouseBinding MouseAction="LeftClick"
                                                                   Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, 
-                                                                            Path=DataContext.AddTagCommand}"
+                                                                            Path=DataContext.Filters.AddTagCommand}"
                                                                   CommandParameter="{Binding Path=.}" />
                                                 </TextBlock.InputBindings>
                                             </TextBlock>
@@ -302,4 +303,4 @@
 
     </Grid>
 
-</Controls:MetroWindow>
+</controls:MetroWindow>

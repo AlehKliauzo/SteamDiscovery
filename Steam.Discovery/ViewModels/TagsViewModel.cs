@@ -12,11 +12,6 @@ namespace Steam.Discovery.ViewModels
     {
         private List<Tag> _allTags;
 
-        public TagsViewModel()
-        {
-
-        }
-
         public TagsViewModel(List<Tag> tags)
         {
             _allTags = tags;
