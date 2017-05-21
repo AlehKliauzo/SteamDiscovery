@@ -8,7 +8,7 @@ namespace Steam.Discovery.Models
 {
     public enum SelectedTab
     {
-        HardFilters,
-        SoftFilters
+        Filters,
+        TagsPriority
     }
 }

@@ -20,14 +20,14 @@
             </ResourceDictionary.MergedDictionaries>
 
             <vm:ViewModelLocator x:Key="Locator"
-                                 d:IsDataSource="True"/>
+                                 d:IsDataSource="True" />
 
             <converters:GamesListToTagsTextBlockWidthConverter x:Key="GamesListToTagsTextBlockWidthConverter" />
             <converters:CollectionToStringConverter x:Key="CollectionToStringConverter" />
             <converters:ListWidthToNameMarginConverter x:Key="ListWidthToNameMarginConverter" />
-            <converters:SelectedTabToIndexConverter x:Key="SelectedTabToIndexConverter"/>
+            <converters:SelectedTabToIndexConverter x:Key="SelectedTabToIndexConverter" />
 
-            <Style x:Key="TextBlockWithHover" 
+            <Style x:Key="TextBlockWithHover"
                    TargetType="TextBlock">
                 <Setter Property="Cursor"
                         Value="Hand" />
@@ -38,6 +38,24 @@
                                 Value="White" />
                     </Trigger>
                 </Style.Triggers>
+            </Style>
+
+            <Style x:Key="TextBoxMultilineWithAutoHeight"
+                   TargetType="TextBox">
+                <Setter Property="Width"
+                        Value="250" />
+                <Setter Property="MinHeight"
+                        Value="20" />
+                <Setter Property="MaxHeight"
+                        Value="150" />
+                <Setter Property="VerticalScrollBarVisibility"
+                        Value="Auto" />
+                <Setter Property="TextWrapping"
+                        Value="Wrap" />
+                <Setter Property="AcceptsReturn"
+                        Value="True" />
+                <Setter Property="BorderThickness"
+                        Value="0 0 0 1"></Setter>
             </Style>
 
             <Style x:Key="ListViewWithoutHighlighting"

@@ -11,6 +11,9 @@ namespace Steam.Common
         public bool IsNameContainsFilterEnabled { get; set; }
         public string NameContains { get; set; }
 
+        public bool IsExcudeGamesFilterEnabled { get; set; }
+        public string ExcludeGames { get; set; }
+
         public bool IsReleasedAfterFilterEnabled { get; set; }
         public string ReleasedAfter { get; set; }
 

@@ -25,7 +25,7 @@ namespace Steam.Discovery.ViewModels
 
         public FiltersViewModel(List<Tag> tags)
         {
-            SelectedTab = SelectedTab.SoftFilters;
+            SelectedTab = SelectedTab.Filters;
             _tagsViewModel = new TagsViewModel(tags);
 
             AppMessenger.RegisterForMessage(this, OnMessageReceived);
@@ -64,6 +64,30 @@ namespace Steam.Discovery.ViewModels
             {
                 _nameContains = value;
                 RaisePropertyChanged(() => NameContains);
+                FiltersChanged();
+            }
+        }
+
+        private bool _isExcludeGamesFilterEnabled;
+        public bool IsExcludeGamesFilterEnabled
+        {
+            get { return _isExcludeGamesFilterEnabled; }
+            set
+            {
+                _isExcludeGamesFilterEnabled = value;
+                RaisePropertyChanged(() => IsExcludeGamesFilterEnabled);
+                FiltersChanged();
+            }
+        }
+
+        private string _excludeGames;
+        public string ExcludeGames
+        {
+            get { return _excludeGames; }
+            set
+            {
+                _excludeGames = value;
+                RaisePropertyChanged(() => ExcludeGames);
                 FiltersChanged();
             }
         }
@@ -205,7 +229,7 @@ namespace Steam.Discovery.ViewModels
 
         private void AddTag(string tag)
         {
-            if (SelectedTab == SelectedTab.HardFilters)
+            if (SelectedTab == SelectedTab.Filters)
             {
                 var textToAdd = tag + ", ";
 
@@ -233,6 +257,8 @@ namespace Steam.Discovery.ViewModels
 
             IsNameContainsFilterEnabled = settings.IsNameContainsFilterEnabled;
             NameContains = settings.NameContains;
+            IsExcludeGamesFilterEnabled = settings.IsExcudeGamesFilterEnabled;
+            ExcludeGames = settings.ExcludeGames;
             IsReleasedAfterFilterEnabled = settings.IsReleasedAfterFilterEnabled;
             ReleasedAfter = settings.ReleasedAfter;
             IsMoreThanXReviewsFilterEnabled = settings.IsMoreThanXReviewsFilterEnabled;
@@ -252,6 +278,8 @@ namespace Steam.Discovery.ViewModels
             var settings = new Filters();
             settings.IsNameContainsFilterEnabled = IsNameContainsFilterEnabled;
             settings.NameContains = NameContains;
+            settings.IsExcudeGamesFilterEnabled = IsExcludeGamesFilterEnabled;
+            settings.ExcludeGames = ExcludeGames;
             settings.IsReleasedAfterFilterEnabled = IsReleasedAfterFilterEnabled;
             settings.ReleasedAfter = ReleasedAfter;
             settings.IsMoreThanXReviewsFilterEnabled = IsMoreThanXReviewsFilterEnabled;

@@ -114,8 +114,8 @@ namespace Steam.Discovery.ViewModels
         {
             //TODO: compare filter settings to previous
             var filters = Filters.GetFilters();
-            var games = ApplyHardFilters(_allGames, filters);
-            games = ApplySoftFilters(games, filters);
+            var games = ApplyFilters(_allGames, filters);
+            CalculateTagsPriority(games, filters);
 
             _filteredGames = games.OrderByDescending(x => x.TotalScore).ToList();
             //_filteredGames = games.OrderByDescending(x => x.PreferenceScore).ThenByDescending(x => x.WilsonScore).ToList();
@@ -125,13 +125,20 @@ namespace Steam.Discovery.ViewModels
             ShowPage(1);
         }
 
-        private List<Game> ApplyHardFilters(List<Game> source, Filters filters)
+        private List<Game> ApplyFilters(List<Game> source, Filters filters)
         {
             IEnumerable<Game> games = source;
 
             if (filters.IsNameContainsFilterEnabled)
             {
                 games = games.Where(x => x.Name.IndexOf(filters.NameContains, StringComparison.InvariantCultureIgnoreCase) != -1);
+            }
+
+            if (filters.IsExcudeGamesFilterEnabled)
+            {
+                var excludeGames = SplitStringOnCommas(filters.ExcludeGames);
+
+                games = games.Where(x => excludeGames.All(y => !y.Equals(x.Name, StringComparison.InvariantCultureIgnoreCase)));
             }
 
             if (filters.IsReleasedAfterFilterEnabled && DateTime.TryParse(filters.ReleasedAfter, out DateTime releaseDate))
@@ -175,13 +182,13 @@ namespace Steam.Discovery.ViewModels
             return entries;
         }
 
-        private List<Game> ApplySoftFilters(List<Game> games, Filters filters)
+        private void CalculateTagsPriority(List<Game> games, Filters filters)
         {
             var preferences = new Dictionary<string, double>();
 
             if (string.IsNullOrEmpty(filters.SoftTags))
             {
-                return games;
+                return;
             }
 
             var allTags = SplitStringOnCommas(filters.SoftTags);
@@ -221,8 +228,6 @@ namespace Steam.Discovery.ViewModels
                 game.PreferenceScore = score;
                 game.TotalScore = game.WilsonScore * game.PreferenceScore;
             }
-
-            return games;
         }
 
         private void UpdatePaging()
@@ -262,7 +267,7 @@ namespace Steam.Discovery.ViewModels
             await Task.Run(() =>
             {
                 var settings = Serializer.LoadSettings();
-                _allGames = Serializer.LoadGames().Where(x => x.Tags.Count >= 5 && x.WilsonScore > 70).ToList();
+                _allGames = Serializer.LoadGames().Where(x => x.Tags.Count >= 5 && x.WilsonScore > 75).ToList();
 
                 Dictionary<string, int> tags = new Dictionary<string, int>();
 

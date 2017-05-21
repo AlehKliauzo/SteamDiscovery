@@ -29,6 +29,21 @@
                 </CheckBox>
 
                 <CheckBox Margin="5 5 5 5"
+                          IsChecked="{Binding IsExcludeGamesFilterEnabled}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox IsReadOnly="True"
+                                     BorderThickness="0"
+                                     Text="exclude games" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+
+                <TextBox Text="{Binding ExcludeGames, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                         Margin="30 0 0 0"/>
+
+                <CheckBox Margin="5 5 5 5"
                           IsChecked="{Binding IsReleasedAfterFilterEnabled}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
@@ -85,14 +100,9 @@
                     </CheckBox.Content>
                 </CheckBox>
 
-                <TextBox Width="250"
-                         Text="{Binding DoesntHaveTags, UpdateSourceTrigger=PropertyChanged}"
-                         Height="150"
-                         VerticalScrollBarVisibility="Auto"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Margin="15 0 0 0"
-                         BorderThickness="0 0 0 1"
+                <TextBox Text="{Binding DoesntHaveTags, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                         Margin="30 0 0 0"
                          GotFocus="TextBox_GotFocus" />
 
                 <CheckBox Margin="5 5 5 5"
@@ -104,14 +114,9 @@
                     </CheckBox.Content>
                 </CheckBox>
 
-                <TextBox Width="250"
-                         Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
-                         Height="50"
-                         VerticalScrollBarVisibility="Auto"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Margin="15 0 0 0"
-                         BorderThickness="0 0 0 1"
+                <TextBox Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                         Margin="30 0 0 0"
                          GotFocus="TextBox_GotFocus_1" />
             </StackPanel>
         </TabItem>
