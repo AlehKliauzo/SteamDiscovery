@@ -34,7 +34,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBox IsReadOnly="True"
                                      BorderThickness="0"
-                                     Text="exclude games" />
+                                     Text="name doesn't contain" />
                         </StackPanel>
                     </CheckBox.Content>
                 </CheckBox>
@@ -80,6 +80,20 @@
                 </CheckBox>
 
                 <CheckBox Margin="5 5 5 5"
+                          IsChecked="{Binding IsHasTagsFilterEnabled}">
+                    <CheckBox.Content>
+                        <TextBox IsReadOnly="True"
+                                 BorderThickness="0"
+                                 Text="has tags" />
+                    </CheckBox.Content>
+                </CheckBox>
+
+                <TextBox Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                         Margin="30 0 0 0"
+                         GotFocus="TextBox_GotFocus_1" />
+
+                <CheckBox Margin="5 5 5 5"
                           IsChecked="{Binding IsDoesntHaveTagsFilterEnabled}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
@@ -104,20 +118,6 @@
                          Style="{StaticResource TextBoxMultilineWithAutoHeight}"
                          Margin="30 0 0 0"
                          GotFocus="TextBox_GotFocus" />
-
-                <CheckBox Margin="5 5 5 5"
-                          IsChecked="{Binding IsHasTagsFilterEnabled}">
-                    <CheckBox.Content>
-                        <TextBox IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="has tags" />
-                    </CheckBox.Content>
-                </CheckBox>
-
-                <TextBox Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
-                         Margin="30 0 0 0"
-                         GotFocus="TextBox_GotFocus_1" />
             </StackPanel>
         </TabItem>
 

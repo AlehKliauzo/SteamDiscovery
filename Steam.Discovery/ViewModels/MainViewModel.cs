@@ -15,7 +15,7 @@ namespace Steam.Discovery.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private const int gamesPerPage = 10;
+        private const int gamesPerPage = 7;
         private List<Game> _allGames;
         private List<Game> _filteredGames;
 
@@ -117,7 +117,7 @@ namespace Steam.Discovery.ViewModels
             var games = ApplyFilters(_allGames, filters);
             CalculateTagsPriority(games, filters);
 
-            _filteredGames = games.OrderByDescending(x => x.TotalScore).ToList();
+            _filteredGames = games.OrderByDescending(x => x.PreferenceScore).ToList();
             //_filteredGames = games.OrderByDescending(x => x.PreferenceScore).ThenByDescending(x => x.WilsonScore).ToList();
             ResultsCount = _filteredGames.Count.ToString();
 
@@ -138,7 +138,7 @@ namespace Steam.Discovery.ViewModels
             {
                 var excludeGames = SplitStringOnCommas(filters.ExcludeGames);
 
-                games = games.Where(x => excludeGames.All(y => !y.Equals(x.Name, StringComparison.InvariantCultureIgnoreCase)));
+                games = games.Where(x => excludeGames.All(y => x.Name.IndexOf(y, StringComparison.InvariantCultureIgnoreCase) == -1));
             }
 
             if (filters.IsReleasedAfterFilterEnabled && DateTime.TryParse(filters.ReleasedAfter, out DateTime releaseDate))
@@ -207,7 +207,14 @@ namespace Steam.Discovery.ViewModels
 
                 if (double.TryParse(tagValue, out double value))
                 {
-                    preferences.Add(tagName, value / 10.0);
+                    try
+                    {
+                        preferences.Add(tagName, value / 10.0);
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO:show error on UI and log exceptions
+                    }
                 }
             }
 
@@ -267,7 +274,7 @@ namespace Steam.Discovery.ViewModels
             await Task.Run(() =>
             {
                 var settings = Serializer.LoadSettings();
-                _allGames = Serializer.LoadGames().Where(x => x.Tags.Count >= 5 && x.WilsonScore > 75).ToList();
+                _allGames = Serializer.LoadGames().Where(x => x.Tags.Count >= 7 && x.WilsonScore > 75).ToList();
 
                 Dictionary<string, int> tags = new Dictionary<string, int>();
 
