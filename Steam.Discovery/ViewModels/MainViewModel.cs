@@ -200,7 +200,7 @@ namespace Steam.Discovery.ViewModels
 
                 if (double.TryParse(tagValue, out double value))
                 {
-                    preferences.Add(tagName, value / 100.0);
+                    preferences.Add(tagName, value / 10.0);
                 }
             }
 

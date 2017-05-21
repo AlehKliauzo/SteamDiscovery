@@ -8,7 +8,7 @@
              d:DataContext="{Binding Source={StaticResource Locator}, Path=Filters}">
     <TabControl Margin="5 5 5 5"
                 SelectedIndex="{Binding SelectedTab, Converter={StaticResource SelectedTabToIndexConverter}}">
-        <TabItem Header="Hard filters"
+        <TabItem Header="Filters"
                  controls:ControlsHelper.HeaderFontSize="18">
             <StackPanel Orientation="Vertical">
 
@@ -116,14 +116,14 @@
             </StackPanel>
         </TabItem>
 
-        <TabItem Header="Soft filters"
+        <TabItem Header="Tags priority"
                  controls:ControlsHelper.HeaderFontSize="18">
             <StackPanel Orientation="Vertical">
 
                 <StackPanel Orientation="Horizontal">
                     <TextBox IsReadOnly="True"
                              BorderThickness="0"
-                             Text="tags sympathy (between -100 and 100)" />
+                             Text="tags sympathy (between -10 and 10)" />
 
                     <TextBox Text="Tags"
                              Cursor="Hand"
