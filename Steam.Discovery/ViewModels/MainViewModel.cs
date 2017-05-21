@@ -134,9 +134,9 @@ namespace Steam.Discovery.ViewModels
                 games = games.Where(x => x.Name.IndexOf(filters.NameContains, StringComparison.InvariantCultureIgnoreCase) != -1);
             }
 
-            if (filters.IsExcudeGamesFilterEnabled)
+            if (filters.IsNameDoesntContainFilterEnabled)
             {
-                var excludeGames = SplitStringOnCommas(filters.ExcludeGames);
+                var excludeGames = SplitStringOnCommas(filters.NameDoesntContain);
 
                 games = games.Where(x => excludeGames.All(y => x.Name.IndexOf(y, StringComparison.InvariantCultureIgnoreCase) == -1));
             }
@@ -151,14 +151,14 @@ namespace Steam.Discovery.ViewModels
                 games = games.Where(x => x.AllTotalReviews > reviewsCount);
             }
 
-            if (filters.IsDoesntHaveTagsFilterEnabled)
+            if (filters.IsMoreThanXTagsFilterEnabled && int.TryParse(filters.MoreThanXTags, out int tagsCount))
             {
-                var tags = SplitStringOnCommas(filters.DoesntHaveTags);
+                games = games.Where(x => x.Tags.Count > tagsCount);
+            }
 
-                foreach (var tag in tags)
-                {
-                    games = games.Where(x => x.Tags.All(y => !y.Equals(tag, StringComparison.InvariantCultureIgnoreCase)));
-                }
+            if (filters.IsGameScoreHigherThanXFilterEnabled && int.TryParse(filters.GameScoreHigherThanX, out int gameScore))
+            {
+                games = games.Where(x => x.WilsonScore > gameScore);
             }
 
             if (filters.IsHasTagsFilterEnabled)
@@ -168,6 +168,16 @@ namespace Steam.Discovery.ViewModels
                 foreach (var tag in tags)
                 {
                     games = games.Where(x => x.Tags.Any(y => y.Equals(tag, StringComparison.InvariantCultureIgnoreCase)));
+                }
+            }
+
+            if (filters.IsDoesntHaveTagsFilterEnabled)
+            {
+                var tags = SplitStringOnCommas(filters.DoesntHaveTags);
+
+                foreach (var tag in tags)
+                {
+                    games = games.Where(x => x.Tags.All(y => !y.Equals(tag, StringComparison.InvariantCultureIgnoreCase)));
                 }
             }
 
@@ -186,12 +196,12 @@ namespace Steam.Discovery.ViewModels
         {
             var preferences = new Dictionary<string, double>();
 
-            if (string.IsNullOrEmpty(filters.SoftTags))
+            if (string.IsNullOrEmpty(filters.TagsPriority))
             {
                 return;
             }
 
-            var allTags = SplitStringOnCommas(filters.SoftTags);
+            var allTags = SplitStringOnCommas(filters.TagsPriority);
 
             foreach (var tag in allTags)
             {
@@ -274,7 +284,7 @@ namespace Steam.Discovery.ViewModels
             await Task.Run(() =>
             {
                 var settings = Serializer.LoadSettings();
-                _allGames = Serializer.LoadGames().Where(x => x.Tags.Count >= 7 && x.WilsonScore > 75).ToList();
+                _allGames = Serializer.LoadGames().ToList();
 
                 Dictionary<string, int> tags = new Dictionary<string, int>();
 

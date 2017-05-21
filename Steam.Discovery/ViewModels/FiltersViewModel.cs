@@ -68,26 +68,26 @@ namespace Steam.Discovery.ViewModels
             }
         }
 
-        private bool _isExcludeGamesFilterEnabled;
-        public bool IsExcludeGamesFilterEnabled
+        private bool _isNameDoesntContainFilterEnabled;
+        public bool IsNameDoesntContainFilterEnabled
         {
-            get { return _isExcludeGamesFilterEnabled; }
+            get { return _isNameDoesntContainFilterEnabled; }
             set
             {
-                _isExcludeGamesFilterEnabled = value;
-                RaisePropertyChanged(() => IsExcludeGamesFilterEnabled);
+                _isNameDoesntContainFilterEnabled = value;
+                RaisePropertyChanged(() => IsNameDoesntContainFilterEnabled);
                 FiltersChanged();
             }
         }
 
-        private string _excludeGames;
-        public string ExcludeGames
+        private string _nameDoesntContain;
+        public string NameDoesntContain
         {
-            get { return _excludeGames; }
+            get { return _nameDoesntContain; }
             set
             {
-                _excludeGames = value;
-                RaisePropertyChanged(() => ExcludeGames);
+                _nameDoesntContain = value;
+                RaisePropertyChanged(() => NameDoesntContain);
                 FiltersChanged();
             }
         }
@@ -140,26 +140,50 @@ namespace Steam.Discovery.ViewModels
             }
         }
 
-        private bool _isDoesntHaveTagsFilterEnabled;
-        public bool IsDoesntHaveTagsFilterEnabled
+        private bool _isHasMoreThanXTagsFilterEnabled;
+        public bool IsHasMoreThanXTagsFilterEnabled
         {
-            get { return _isDoesntHaveTagsFilterEnabled; }
+            get { return _isHasMoreThanXTagsFilterEnabled; }
             set
             {
-                _isDoesntHaveTagsFilterEnabled = value;
-                RaisePropertyChanged(() => IsDoesntHaveTagsFilterEnabled);
+                _isHasMoreThanXTagsFilterEnabled = value;
+                RaisePropertyChanged(() => IsHasMoreThanXTagsFilterEnabled);
                 FiltersChanged();
             }
         }
 
-        private string _doesntHaveTags;
-        public string DoesntHaveTags
+        private string _moreThanXTags;
+        public string MoreThanXTags
         {
-            get { return _doesntHaveTags; }
+            get { return _moreThanXTags; }
             set
             {
-                _doesntHaveTags = value;
-                RaisePropertyChanged(() => DoesntHaveTags);
+                _moreThanXTags = value;
+                RaisePropertyChanged(() => MoreThanXTags);
+                FiltersChanged();
+            }
+        }
+
+        private bool _isGameScoreHigherThanXFilterEnabled;
+        public bool IsGameScoreHigherThanXFilterEnabled
+        {
+            get { return _isGameScoreHigherThanXFilterEnabled; }
+            set
+            {
+                _isGameScoreHigherThanXFilterEnabled = value;
+                RaisePropertyChanged(() => IsGameScoreHigherThanXFilterEnabled);
+                FiltersChanged();
+            }
+        }
+
+        private string _gameScoreHigherThanX;
+        public string GameScoreHigherThanX
+        {
+            get { return _gameScoreHigherThanX; }
+            set
+            {
+                _gameScoreHigherThanX = value;
+                RaisePropertyChanged(() => GameScoreHigherThanX);
                 FiltersChanged();
             }
         }
@@ -188,14 +212,38 @@ namespace Steam.Discovery.ViewModels
             }
         }
 
-        private string _softTags;
-        public string SoftTags
+        private bool _isDoesntHaveTagsFilterEnabled;
+        public bool IsDoesntHaveTagsFilterEnabled
         {
-            get { return _softTags; }
+            get { return _isDoesntHaveTagsFilterEnabled; }
             set
             {
-                _softTags = value;
-                RaisePropertyChanged(() => SoftTags);
+                _isDoesntHaveTagsFilterEnabled = value;
+                RaisePropertyChanged(() => IsDoesntHaveTagsFilterEnabled);
+                FiltersChanged();
+            }
+        }
+
+        private string _doesntHaveTags;
+        public string DoesntHaveTags
+        {
+            get { return _doesntHaveTags; }
+            set
+            {
+                _doesntHaveTags = value;
+                RaisePropertyChanged(() => DoesntHaveTags);
+                FiltersChanged();
+            }
+        }
+
+        private string _tagsPriority;
+        public string TagsPriority
+        {
+            get { return _tagsPriority; }
+            set
+            {
+                _tagsPriority = value;
+                RaisePropertyChanged(() => TagsPriority);
                 FiltersChanged();
             }
         }
@@ -245,7 +293,7 @@ namespace Steam.Discovery.ViewModels
             else
             {
                 var textToAdd = tag + " 0, ";
-                SoftTags += textToAdd;
+                TagsPriority += textToAdd;
             }
         }
 
@@ -257,17 +305,22 @@ namespace Steam.Discovery.ViewModels
 
             IsNameContainsFilterEnabled = settings.IsNameContainsFilterEnabled;
             NameContains = settings.NameContains;
-            IsExcludeGamesFilterEnabled = settings.IsExcudeGamesFilterEnabled;
-            ExcludeGames = settings.ExcludeGames;
+            IsNameDoesntContainFilterEnabled = settings.IsNameDoesntContainFilterEnabled;
+            NameDoesntContain = settings.NameDoesntContain;
             IsReleasedAfterFilterEnabled = settings.IsReleasedAfterFilterEnabled;
             ReleasedAfter = settings.ReleasedAfter;
+            IsHasMoreThanXTagsFilterEnabled = settings.IsMoreThanXTagsFilterEnabled;
+            MoreThanXTags = settings.MoreThanXTags;
+            IsGameScoreHigherThanXFilterEnabled = settings.IsGameScoreHigherThanXFilterEnabled;
+            GameScoreHigherThanX = settings.GameScoreHigherThanX;
             IsMoreThanXReviewsFilterEnabled = settings.IsMoreThanXReviewsFilterEnabled;
             MoreThanXReviews = settings.MoreThanXReviews;
-            IsDoesntHaveTagsFilterEnabled = settings.IsDoesntHaveTagsFilterEnabled;
-            DoesntHaveTags = settings.DoesntHaveTags;
             IsHasTagsFilterEnabled = settings.IsHasTagsFilterEnabled;
             HasTags = settings.HasTags;
-            SoftTags = settings.SoftTags;
+            IsDoesntHaveTagsFilterEnabled = settings.IsDoesntHaveTagsFilterEnabled;
+            DoesntHaveTags = settings.DoesntHaveTags;
+
+            TagsPriority = settings.TagsPriority;
 
             _updatesSuspended = false;
             FiltersChanged();
@@ -278,17 +331,21 @@ namespace Steam.Discovery.ViewModels
             var settings = new Filters();
             settings.IsNameContainsFilterEnabled = IsNameContainsFilterEnabled;
             settings.NameContains = NameContains;
-            settings.IsExcudeGamesFilterEnabled = IsExcludeGamesFilterEnabled;
-            settings.ExcludeGames = ExcludeGames;
+            settings.IsNameDoesntContainFilterEnabled = IsNameDoesntContainFilterEnabled;
+            settings.NameDoesntContain = NameDoesntContain;
             settings.IsReleasedAfterFilterEnabled = IsReleasedAfterFilterEnabled;
             settings.ReleasedAfter = ReleasedAfter;
             settings.IsMoreThanXReviewsFilterEnabled = IsMoreThanXReviewsFilterEnabled;
             settings.MoreThanXReviews = MoreThanXReviews;
-            settings.IsDoesntHaveTagsFilterEnabled = IsDoesntHaveTagsFilterEnabled;
-            settings.DoesntHaveTags = DoesntHaveTags;
+            settings.IsMoreThanXTagsFilterEnabled = IsHasMoreThanXTagsFilterEnabled;
+            settings.MoreThanXTags = MoreThanXTags;
+            settings.IsGameScoreHigherThanXFilterEnabled = IsGameScoreHigherThanXFilterEnabled;
+            settings.GameScoreHigherThanX = GameScoreHigherThanX;
             settings.IsHasTagsFilterEnabled = IsHasTagsFilterEnabled;
             settings.HasTags = HasTags;
-            settings.SoftTags = SoftTags;
+            settings.IsDoesntHaveTagsFilterEnabled = IsDoesntHaveTagsFilterEnabled;
+            settings.DoesntHaveTags = DoesntHaveTags;
+            settings.TagsPriority = TagsPriority;
             return settings;
         }
 

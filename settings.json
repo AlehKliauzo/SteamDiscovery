@@ -1,0 +1,19 @@
+{
+  "IsNameContainsFilterEnabled": false,
+  "NameContains": "Dark Souls",
+  "IsNameDoesntContainFilterEnabled": true,
+  "NameDoesntContain": "Borderlands, Far Cry, Batman, Styx, Naruto, Transformers, Saints Row, LEGO, Simulator, Sniper, \r\n\r\nMad Max, Middle-earth: Shadow of Mordor, Risen 2: Dark Waters, Brutal Legend, Max Payne 3, Outcast 1.1, Sonic,",
+  "IsReleasedAfterFilterEnabled": true,
+  "ReleasedAfter": "2012.01.01",
+  "IsMoreThanXReviewsFilterEnabled": true,
+  "MoreThanXReviews": "200",
+  "IsMoreThanXTagsFilterEnabled": true,
+  "MoreThanXTags": "7",
+  "IsGameScoreHigherThanXFilterEnabled": true,
+  "GameScoreHigherThanX": "70",
+  "IsHasTagsFilterEnabled": false,
+  "HasTags": "",
+  "IsDoesntHaveTagsFilterEnabled": true,
+  "DoesntHaveTags": "Early Access, Hidden Object, Visual Novel, Point & Click, Isometric, Rogue-like, Rogue-lite, Platformer, 3D Platformer, Space Sim, MMORPG, Massively Multiplayer, Simulation, Text-based, Top-Down, Top-Down Shooter, Pixel Graphics, Rhythm, 2D Fighter, VR, Puzzle, Tower Defense, Sports, Turn-Based Strategy, Grand Strategy, RTS, Documentary,",
+  "TagsPriority": "Fighting -3,  Classic -10, Beat 'em up -3, Hack and Slash -4, Post-apocalyptic -10, Steampunk -10, Zombies -10, Horror -10, JRPG -10, Quick-Time Events -10, Short -3, Historical -5, Strategy -10, Survival -10, Crafting -5, Anime -10, Casual -10, Familty Friendly -10, Walking Simulator -10, Memes -10, \r\n\r\nOpen World 8, RPG 8, Singleplayer 10, Third Person 8, Story Rich 7, Cyberpunk 8, Atmospheric 6, Choices Matter 2, "
+}

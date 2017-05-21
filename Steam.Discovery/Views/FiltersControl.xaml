@@ -10,115 +10,154 @@
                 SelectedIndex="{Binding SelectedTab, Converter={StaticResource SelectedTabToIndexConverter}}">
         <TabItem Header="Filters"
                  controls:ControlsHelper.HeaderFontSize="18">
-            <StackPanel Orientation="Vertical">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical">
 
-                <CheckBox Margin="5 5 5 5"
-                          IsChecked="{Binding IsNameContainsFilterEnabled}">
-                    <CheckBox.Content>
-                        <StackPanel Orientation="Horizontal">
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsNameContainsFilterEnabled}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="name contains" />
+
+                                <TextBox Width="80"
+                                         Text="{Binding NameContains, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="0"
+                                         BorderThickness="0 0 0 1" />
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsNameDoesntContainFilterEnabled}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="name doesn't contain" />
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+
+                    <TextBox Text="{Binding NameDoesntContain, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                             Margin="30 0 0 0" />
+
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsReleasedAfterFilterEnabled}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="released after" />
+
+                                <TextBox Width="80"
+                                         Text="{Binding ReleasedAfter, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="0"
+                                         BorderThickness="0 0 0 1" />
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsMoreThanXReviewsFilterEnabled}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="has more than" />
+
+                                <TextBox Width="60"
+                                         Text="{Binding MoreThanXReviews, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="0"
+                                         BorderThickness="0 0 0 1" />
+
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="reviews" />
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsHasMoreThanXTagsFilterEnabled}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="has more than" />
+
+                                <TextBox Width="60"
+                                         Text="{Binding MoreThanXTags, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="0"
+                                         BorderThickness="0 0 0 1" />
+
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="tags" />
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsGameScoreHigherThanXFilterEnabled}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="score higher than" />
+
+                                <TextBox Width="60"
+                                         Text="{Binding GameScoreHigherThanX, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="0"
+                                         BorderThickness="0 0 0 1" />
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsHasTagsFilterEnabled}">
+                        <CheckBox.Content>
                             <TextBox IsReadOnly="True"
                                      BorderThickness="0"
-                                     Text="name contains" />
+                                     Text="has tags" />
+                        </CheckBox.Content>
+                    </CheckBox>
 
-                            <TextBox Width="80"
-                                     Text="{Binding NameContains, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0"
-                                     BorderThickness="0 0 0 1" />
-                        </StackPanel>
-                    </CheckBox.Content>
-                </CheckBox>
+                    <TextBox Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                             Margin="30 0 0 0"
+                             GotFocus="TextBox_GotFocus_1" />
 
-                <CheckBox Margin="5 5 5 5"
-                          IsChecked="{Binding IsExcludeGamesFilterEnabled}">
-                    <CheckBox.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox IsReadOnly="True"
-                                     BorderThickness="0"
-                                     Text="name doesn't contain" />
-                        </StackPanel>
-                    </CheckBox.Content>
-                </CheckBox>
+                    <CheckBox Margin="5 5 5 5"
+                              IsChecked="{Binding IsDoesntHaveTagsFilterEnabled}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Text="doesn't have tags" />
 
-                <TextBox Text="{Binding ExcludeGames, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
-                         Margin="30 0 0 0"/>
+                                <TextBox Text="Tags"
+                                         Cursor="Hand"
+                                         IsReadOnly="True"
+                                         BorderThickness="0">
+                                    <TextBox.InputBindings>
+                                        <MouseBinding MouseAction="LeftClick"
+                                                      Command="{Binding ShowTagsWindowCommand}" />
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
 
-                <CheckBox Margin="5 5 5 5"
-                          IsChecked="{Binding IsReleasedAfterFilterEnabled}">
-                    <CheckBox.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox IsReadOnly="True"
-                                     BorderThickness="0"
-                                     Text="released after" />
-
-                            <TextBox Width="80"
-                                     Text="{Binding ReleasedAfter, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0"
-                                     BorderThickness="0 0 0 1" />
-                        </StackPanel>
-                    </CheckBox.Content>
-                </CheckBox>
-
-                <CheckBox Margin="5 5 5 5"
-                          IsChecked="{Binding IsMoreThanXReviewsFilterEnabled}">
-                    <CheckBox.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox IsReadOnly="True"
-                                     BorderThickness="0"
-                                     Text="has more than" />
-
-                            <TextBox Width="60"
-                                     Text="{Binding MoreThanXReviews, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0"
-                                     BorderThickness="0 0 0 1" />
-
-                            <TextBox IsReadOnly="True"
-                                     BorderThickness="0"
-                                     Text="reviews" />
-                        </StackPanel>
-                    </CheckBox.Content>
-                </CheckBox>
-
-                <CheckBox Margin="5 5 5 5"
-                          IsChecked="{Binding IsHasTagsFilterEnabled}">
-                    <CheckBox.Content>
-                        <TextBox IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="has tags" />
-                    </CheckBox.Content>
-                </CheckBox>
-
-                <TextBox Text="{Binding HasTags, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
-                         Margin="30 0 0 0"
-                         GotFocus="TextBox_GotFocus_1" />
-
-                <CheckBox Margin="5 5 5 5"
-                          IsChecked="{Binding IsDoesntHaveTagsFilterEnabled}">
-                    <CheckBox.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox IsReadOnly="True"
-                                     BorderThickness="0"
-                                     Text="doesn't have tags" />
-
-                            <TextBox Text="Tags"
-                                     Cursor="Hand"
-                                     IsReadOnly="True"
-                                     BorderThickness="0">
-                                <TextBox.InputBindings>
-                                    <MouseBinding MouseAction="LeftClick"
-                                                  Command="{Binding ShowTagsWindowCommand}" />
-                                </TextBox.InputBindings>
-                            </TextBox>
-                        </StackPanel>
-                    </CheckBox.Content>
-                </CheckBox>
-
-                <TextBox Text="{Binding DoesntHaveTags, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
-                         Margin="30 0 0 0"
-                         GotFocus="TextBox_GotFocus" />
-            </StackPanel>
+                    <TextBox Text="{Binding DoesntHaveTags, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                             Margin="30 0 0 0"
+                             GotFocus="TextBox_GotFocus" />
+                </StackPanel>
+            </ScrollViewer>
         </TabItem>
 
         <TabItem Header="Tags priority"
@@ -128,7 +167,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBox IsReadOnly="True"
                              BorderThickness="0"
-                             Text="tags sympathy (between -10 and 10)" />
+                             Text="tags priority" />
 
                     <TextBox Text="Tags"
                              Cursor="Hand"
@@ -141,14 +180,11 @@
                     </TextBox>
                 </StackPanel>
 
-                <TextBox Text="{Binding SoftTags, UpdateSourceTrigger=PropertyChanged}"
-                         Width="250"
-                         Height="300"
-                         BorderThickness="0 0 0 1"
+                <TextBox Text="{Binding TagsPriority, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource TextBoxMultilineWithAutoHeight}"
+                         MaxHeight="300"
                          HorizontalAlignment="Left"
-                         VerticalScrollBarVisibility="Auto"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True">
+                         Margin="5 0 0 0">
                 </TextBox>
             </StackPanel>
         </TabItem>
